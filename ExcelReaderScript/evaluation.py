@@ -12,9 +12,9 @@ a.to_excel(writer, sheet_name="Tabelle1", index=False)
 writer.save()
 
 
-#df_filtered = df["Testcase verdict"] != "ERROR"
-#df_filtered_2 = df.R_Variable1.isin(["PASSED", "FAILED"])
-#print(df_filtered_2)
+# df_filtered = df["Testcase verdict"] != "ERROR"
+# df_filtered_2 = df.R_Variable1.isin(["PASSED", "FAILED"])
+# print(df_filtered_2)
 
 value_list = []
 
@@ -28,4 +28,3 @@ for row in a.iterrows():
 print(value_list)
 print(sum(value_list) / len(value_list))
 print(statistics.mean(value_list))
-
