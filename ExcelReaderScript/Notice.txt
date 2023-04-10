@@ -1,0 +1,4 @@
+Filter for filterExcelResults():
+Dictionary with header as key and content as value
+Beispiel:
+{'Testcase verdict': ['PASSED', 'FAILED']}
