@@ -2,3 +2,13 @@ Filter for filterExcelResults():
 Dictionary with header as key and content as value
 Beispiel:
 {'Testcase verdict': ['PASSED', 'FAILED']}
+
+Filter:
+{
+ Online Availablity TimeTillOnline: {Testcase_1: Variable_1, Testcase_2: Variable_2},
+ AudioHearable Carplay wireless: {Testcase_3: Variable_1},
+ AudioVisible Carplay wireless: {Testcase_3: Variable_2},
+}
+
+
+
