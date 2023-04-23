@@ -10,5 +10,11 @@ Filter:
  AudioVisible Carplay wireless: {Testcase_3: Variable_2},
 }
 
+Alternativ -> verwerfen:
+[
+    {Online Availablity TimeTillOnline: {Testcase_1: Variable_1, Testcase_2: Variable_2}},
+    {AudioHearable Carplay wireless:{Testcase_3: Variable_1}},
+]
+
 
 
