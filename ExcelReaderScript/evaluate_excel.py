@@ -53,44 +53,55 @@ def merge_dataframes(df1: object, df2: object) -> object:
     return df_merged
 
 
-def getSuccessRatio(df, variable_filter):
-    pass
-
-
-def getAverageValue(df: object, data_filter: dict) -> float:
-    """_summary_
+def extractValuesFromDataframe(df: object, result_filter: dict,
+                               tc_var_dict: dict) -> list:
+    """This function filters the dataframe based on the given filters.
+       The result_filter will filter all relevant data from the dataframe.
+       With the tc_var_dict the desired data of the dataframe will be extracted
+       and saved into a list.
 
     Args:
-        df (object): Data frame from which the data will be taken.
-        data_filter (dict): Contains the testcases as keys and the
-                            necessary variables as values.
+        df (object): Dataframe from which the data will be extracted.
+        result_filter (dict): Dictionary with the dataframe headers as keys and
+                              desired values as values.
+        tc_var_dict (dict): Dictionary with the testcase names as keys and
+                            variable names as values.
 
     Returns:
-        float: Calculated average value of the given variable.
+        list: List that contains all extracted values.
     """
-    testcase_filter = {}
-    df_filtered = filterExcelResults(df, testcase_filter)
-    average = list(df_filtered[variable_filter].mean())
-    return print(mean(average))
+    value_list = []
+    for testcase in list(tc_var_dict.keys()):
+        result_filter['Testcase name'] = [testcase]
+        df2 = df.copy()
+        df_filtered = filterExcelResults(df2, result_filter)
+        average = list(df_filtered[tc_var_dict[testcase]])
+        value_list = value_list + average
+    return value_list
 
 
-def getMinimumValue(df, variable_filter):
+def getTotalAmountOfValues(value_list):
     pass
 
 
-def getMaximumValue(df, variable_filter):
+def getAverageValue(value_list):
     pass
 
 
-def extract_results_from_dataframe(df, variable_filter):
+def getMinimumValue(value_list):
+    pass
+
+
+def getMaximumValue(value_list):
+    pass
+
+
+def getSuccessRatio(value_list):
     pass
 
 
 # Test programm
-result_filter = {'Testcase verdict': ['PASSED', 'FAILED'],
-                 'Testcase name': ['Testcase_1', 'Testcase_2', 'Testcase_5'],
-                 'R_Variable3': list(range(0, 20))
-                 }
+result_filter = {'Testcase verdict': ['PASSED', 'FAILED']}
 
 testcase_filter = {
     'Testcase name': ['Testcase_1', 'Testcase_5'],
@@ -115,15 +126,14 @@ data_filter = {
 
 # Search for excel files and save them in a list
 all_files = readExcelFiles()
-print(all_files)
 # Filter all excel files and combine the data to a single data frame
 df_all_data = None
 for file in all_files:
     df = pd.read_excel(file, sheet_name='Tabelle1')
-    df = filterExcelResults(df, result_filter)
     df_all_data = merge_dataframes(df_all_data, df)
-print(df_all_data)
+    print(df_all_data)
 # Read the data frame and calculate the desired values
-for info in data_filter.items():
-    print(info)
-getAverageValue(df_all_data, testcase_filter, variable_filter)
+for info in data_filter:
+    extracted_values = extractValuesFromDataframe(df_all_data, result_filter,
+                                                  data_filter[info][1])
+    print(extracted_values)
