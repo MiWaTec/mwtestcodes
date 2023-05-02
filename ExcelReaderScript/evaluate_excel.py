@@ -81,7 +81,26 @@ def extractValuesFromDataframe(df: object, result_filter: dict,
 
 
 def getTotalAmountOfValues(value_list):
-    pass
+    return len(value_list)
+
+
+def getSuccessRatio(value_list: list) -> int:
+    """This function calculates the percentage of values
+       that indicates successful results. A value is considered
+       a success if it is True or greater than 0.
+
+    Args:
+        value_list (list): List of values.
+
+    Returns:
+        int: Percentage of successful values.
+    """
+    total = len(value_list)
+    success = 0
+    for value in value_list:
+        if value in [True, 'True'] or value > 0:
+            success += 1
+    return round(success / total * 100)
 
 
 def getAverageValue(value_list):
@@ -93,10 +112,6 @@ def getMinimumValue(value_list):
 
 
 def getMaximumValue(value_list):
-    pass
-
-
-def getSuccessRatio(value_list):
     pass
 
 
@@ -137,3 +152,7 @@ for info in data_filter:
     extracted_values = extractValuesFromDataframe(df_all_data, result_filter,
                                                   data_filter[info][1])
     print(extracted_values)
+    total = getTotalAmountOfValues(extracted_values)
+    print(total)
+    success = getSuccessRatio(extracted_values)
+    print(success)
