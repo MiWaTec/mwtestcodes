@@ -1,7 +1,6 @@
 import pandas as pd
 from statistics import mean
 import os
-import json
 
 
 def readExcelFiles() -> list:
@@ -189,7 +188,7 @@ for file in all_files:
 # Read the data frame and calculate the desired values
 for info in data_filter:
     extracted_values = extractValuesFromDataframe(df_all_data, result_filter,
-                                                    data_filter[info][1])
+                                                  data_filter[info][1])
     if info in ['First result info', 'Second result info']:
         print(extracted_values)
         total = getTotalAmountOfValues(extracted_values)
