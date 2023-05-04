@@ -1,6 +1,7 @@
 import pandas as pd
 from statistics import mean
 import os
+import json
 
 
 def readExcelFiles() -> list:
@@ -103,16 +104,51 @@ def getSuccessRatio(value_list: list) -> int:
     return round(success / total * 100)
 
 
-def getAverageValue(value_list):
-    pass
+def getAverageMinMax(value_list: list) -> tuple:
+    """This function calculates the average value of a list of numbers.
+       In addition, the minimum and the maximum value of the list will
+       be determined. Before the calculation, all values less than 0 are
+       removed from the list.
+
+    Args:
+        value_list (list): List of numeric values.
+
+    Returns:
+        tuple: Tuple that contains the average value, minimum value and
+               maximum value: (average, min, max)
+    """
+    filtered_list = [x for x in value_list if x >= 0]
+    average_value = mean(filtered_list)
+    min_value = min(filtered_list)
+    max_value = max(filtered_list)
+    return (average_value, min_value, max_value)
 
 
-def getMinimumValue(value_list):
-    pass
+def countListElements(value_list: list) -> dict:
+    """This function combines the list of lists (the inner lists are present as
+       strings which will be converted to lists) to a single list and counts
+       the number of occurences of each element in the merged list.
 
+    Args:
+        value_list (list): List of lists in string format.
 
-def getMaximumValue(value_list):
-    pass
+    Returns:
+        dict: Dictionary that contains all elements of the merged list as keys
+              and its occurences as values.
+    """
+    # Combine the list of lists to a single list
+    merged_lists = []
+    for list_of_values in value_list:
+        if '[' in list_of_values and ']' in list_of_values:
+            converted_list = list_of_values.strip('][').split(', ')
+            merged_lists = merged_lists + converted_list
+    # Count the occurrence of all elements in the list
+    occurence_dict = {}
+    all_elements = set(merged_lists)
+    for element in all_elements:
+        count = merged_lists.count(element)
+        occurence_dict[element] = count
+    return occurence_dict
 
 
 # Test programm
@@ -129,7 +165,9 @@ data_filter = {
                           {'Testcase_1': 'R_Variable3',
                           'Testcase_2': 'R_Variable2'}),
     'Second result info': (['maximum_value', 'minimum_value', 'average_value'],
-                           {'Testcase_5': 'R_Variable4'})
+                           {'Testcase_5': 'R_Variable4'}),
+    'Third result info': (['value_occurence'],
+                          {'Testcase_8': 'R_Variable5'})
 }
 
 # Legende:
@@ -137,6 +175,7 @@ data_filter = {
 #   minimum_value
 #   average_value
 #   amount_of_true
+#   value_occurence
 
 
 # Search for excel files and save them in a list
@@ -150,9 +189,17 @@ for file in all_files:
 # Read the data frame and calculate the desired values
 for info in data_filter:
     extracted_values = extractValuesFromDataframe(df_all_data, result_filter,
-                                                  data_filter[info][1])
-    print(extracted_values)
-    total = getTotalAmountOfValues(extracted_values)
-    print(total)
-    success = getSuccessRatio(extracted_values)
-    print(success)
+                                                    data_filter[info][1])
+    if info in ['First result info', 'Second result info']:
+        print(extracted_values)
+        total = getTotalAmountOfValues(extracted_values)
+        print(total)
+        success = getSuccessRatio(extracted_values)
+        print(success)
+        average_value = getAverageMinMax(extracted_values)
+        print(average_value)
+        print("loop end")
+    if info == 'Third result info':
+        print(extracted_values)
+        occurence = countListElements(extracted_values)
+        print(occurence)
