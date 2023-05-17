@@ -153,12 +153,6 @@ def countListElements(value_list: list) -> dict:
 # Test programm
 result_filter = {'Testcase verdict': ['PASSED', 'FAILED']}
 
-testcase_filter = {
-    'Testcase name': ['Testcase_1', 'Testcase_5'],
-}
-
-variable_filter = ['R_Variable3', 'R_Variable4']
-
 data_filter = {
     'First result info': (['maximum_value', 'minimum_value', 'average_value'],
                           {'Testcase_1': 'R_Variable3',
