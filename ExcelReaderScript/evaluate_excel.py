@@ -120,7 +120,7 @@ def getAverageMinMax(value_list: list) -> tuple:
     average_value = mean(filtered_list)
     min_value = min(filtered_list)
     max_value = max(filtered_list)
-    return (average_value, min_value, max_value)
+    return {'average': average_value, 'min': min_value, 'max': max_value}
 
 
 def countListElements(value_list: list) -> dict:
@@ -154,14 +154,19 @@ def countListElements(value_list: list) -> dict:
 result_filter = {'Testcase verdict': ['PASSED', 'FAILED']}
 
 data_filter = {
-    'First result info': (['maximum_value', 'minimum_value', 'average_value'],
+    'First result info': (['average_min_max', 'experienceable_ratio'],
                           {'Testcase_1': 'R_Variable3',
                           'Testcase_2': 'R_Variable2'}),
-    'Second result info': (['maximum_value', 'minimum_value', 'average_value'],
+    'Second result info': (['average_min_max', 'experienceable_ratio'],
                            {'Testcase_5': 'R_Variable4'}),
     'Third result info': (['value_occurence'],
                           {'Testcase_8': 'R_Variable5'})
 }
+
+func_mapping = {'average_min_max': getAverageMinMax,
+                'value_occurence': countListElements,
+                'experienceable_ratio': getSuccessRatio,
+                'total': len}
 
 # Legende:
 #   maximum_value
@@ -180,19 +185,18 @@ for file in all_files:
     df_all_data = merge_dataframes(df_all_data, df)
     print(df_all_data)
 # Read the data frame and calculate the desired values
+result_dict = {}
 for info in data_filter:
+    # Filter the data necessery for the calculation of current info
     extracted_values = extractValuesFromDataframe(df_all_data, result_filter,
                                                   data_filter[info][1])
-    if info in ['First result info', 'Second result info']:
-        print(extracted_values)
-        total = getTotalAmountOfValues(extracted_values)
-        print(total)
-        success = getSuccessRatio(extracted_values)
-        print(success)
-        average_value = getAverageMinMax(extracted_values)
-        print(average_value)
-        print("loop end")
-    if info == 'Third result info':
-        print(extracted_values)
-        occurence = countListElements(extracted_values)
-        print(occurence)
+    # Create a list of functions that will be used for calculations
+    info_dict = {}
+    list_of_desired_values = data_filter[info][0]
+    print(list_of_desired_values)
+    for val in list_of_desired_values:
+        calculated_result = func_mapping[val](extracted_values)
+        print(calculated_result)
+        info_dict[val] = calculated_result
+    result_dict[info] = info_dict
+print(result_dict)
