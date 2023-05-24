@@ -176,27 +176,29 @@ func_mapping = {'average_min_max': getAverageMinMax,
 #   value_occurence
 
 
-# Search for excel files and save them in a list
-all_files = readExcelFiles()
-# Filter all excel files and combine the data to a single data frame
-df_all_data = None
-for file in all_files:
-    df = pd.read_excel(file, sheet_name='Tabelle1')
-    df_all_data = merge_dataframes(df_all_data, df)
-    print(df_all_data)
-# Read the data frame and calculate the desired values
-result_dict = {}
-for info in data_filter:
-    # Filter the data necessery for the calculation of current info
-    extracted_values = extractValuesFromDataframe(df_all_data, result_filter,
-                                                  data_filter[info][1])
-    # Create a list of functions that will be used for calculations
-    info_dict = {}
-    list_of_desired_values = data_filter[info][0]
-    print(list_of_desired_values)
-    for val in list_of_desired_values:
-        calculated_result = func_mapping[val](extracted_values)
-        print(calculated_result)
-        info_dict[val] = calculated_result
-    result_dict[info] = info_dict
-print(result_dict)
+def calculate_results():
+    # Search for excel files and save them in a list
+    all_files = readExcelFiles()
+    # Filter all excel files and combine the data to a single data frame
+    df_all_data = None
+    for file in all_files:
+        df = pd.read_excel(file, sheet_name='Tabelle1')
+        df_all_data = merge_dataframes(df_all_data, df)
+        print(df_all_data)
+    # Read the data frame and calculate the desired values
+    result_dict = {}
+    for info in data_filter:
+        # Filter the data necessery for the calculation of current info
+        extracted_values = extractValuesFromDataframe(df_all_data,
+                                                      result_filter,
+                                                      data_filter[info][1])
+        # Create a list of functions that will be used for calculations
+        info_dict = {}
+        list_of_desired_values = data_filter[info][0]
+        print(list_of_desired_values)
+        for val in list_of_desired_values:
+            calculated_result = func_mapping[val](extracted_values)
+            print(calculated_result)
+            info_dict[val] = calculated_result
+        result_dict[info] = info_dict
+    print(result_dict)
