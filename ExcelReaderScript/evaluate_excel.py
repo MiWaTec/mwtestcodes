@@ -1,6 +1,7 @@
 import pandas as pd
 from statistics import mean
 import os
+import json
 
 
 def readExcelFiles() -> list:
@@ -151,7 +152,8 @@ def countListElements(value_list: list) -> dict:
 
 
 # Test programm
-result_filter = {'Testcase verdict': ['PASSED', 'FAILED']}
+result_filter = {'Testcase verdict': ['PASSED', 'FAILED'],
+                 'testbench': ['SYS-110.tbc', 'SYS-112.tbc']}
 
 data_filter = {
     'First result info': (['average_min_max', 'experienceable_ratio'],
@@ -168,12 +170,25 @@ func_mapping = {'average_min_max': getAverageMinMax,
                 'experienceable_ratio': getSuccessRatio,
                 'total': len}
 
-# Legende:
-#   maximum_value
-#   minimum_value
-#   average_value
-#   amount_of_true
-#   value_occurence
+
+def save_filter(filter_type, key, value, state):
+    # Read json file:
+    with open('filter.json', 'r') as f:
+        data = json.load(f)
+    # Modify data of the json file
+    value_list = data[filter_type][key]
+    print(value_list)
+    if value in value_list and state == 0:
+        value_list.remove(value)
+        print(value_list)
+    elif value not in value_list and state == 1:
+        value_list.append(value)
+    print(value_list)
+    data[filter_type][key] = value_list
+    print(data)
+    # Overwrite json file with new data
+    with open('filter.json', 'w') as f:
+        json.dump(data, f, indent=4)
 
 
 def calculate_results():

@@ -1,5 +1,6 @@
 import tkinter as tk
-from evaluate_excel import calculate_results
+import json
+from evaluate_excel import calculate_results, save_filter
 
 window = tk.Tk()
 # Create title of the window
@@ -20,11 +21,13 @@ start_label.grid(column=1, row=0, padx=20, pady=5)
 
 # Checkbuttons for testbenches
 def checkbutton_1_used():
-    print(checked_state_1.get())
+    state = checked_state_1.get()
+    save_filter('result_filter', 'testbench', 'SYS-110.tbc', state)
 
 
 def checkbutton_2_used():
-    print(checked_state_2.get())
+    state = checked_state_2.get()
+    save_filter('result_filter', 'testbench', 'SYS-112.tbc', state)
 
 
 # Checkbutton SYS-110
@@ -53,6 +56,16 @@ def start_button_clicked():
 start_button = tk.Button(text="Calculate", command=start_button_clicked)
 start_button.grid(column=1, row=1, padx=20, pady=5)
 
+# Main program
+# Check default settings
+with open('filter.json', 'r') as f:
+    default = json.load(f)
+
+testbenches = default['result_filter']['testbench']
+if 'SYS-110.tbc' in testbenches:
+    checkbutton_1.select()
+if 'SYS-112.tbc' in testbenches:
+    checkbutton_2.select()
 
 # Loop for waiting for interaction of the user
 window.mainloop()

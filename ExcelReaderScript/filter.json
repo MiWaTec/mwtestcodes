@@ -1,0 +1,41 @@
+{
+    "result_filter": {
+        "Testcase verdict": [
+            "PASSED",
+            "FAILED"
+        ],
+        "testbench": [
+            "SYS-110.tbc",
+            "SYS-112.tbc"
+        ]
+    },
+    "data_filter": {
+        "First result info": [
+            [
+                "average_min_max",
+                "experienceable_ratio"
+            ],
+            {
+                "Testcase_1": "R_Variable3",
+                "Testcase_2": "R_Variable2"
+            }
+        ],
+        "Second result info": [
+            [
+                "average_min_max",
+                "experienceable_ratio"
+            ],
+            {
+                "Testcase_5": "R_Variable4"
+            }
+        ],
+        "Third result info": [
+            [
+                "value_occurence"
+            ],
+            {
+                "Testcase_8": "R_Variable5"
+            }
+        ]
+    }
+}
