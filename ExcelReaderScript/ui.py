@@ -1,6 +1,8 @@
 import tkinter as tk
+import tkinter.ttk as ttk
 import json
 from evaluate_excel import calculate_results, save_filter
+import time
 
 window = tk.Tk()
 # Create title of the window
@@ -30,6 +32,17 @@ def checkbutton_2_used():
     save_filter('result_filter', 'testbench', 'SYS-112.tbc', state)
 
 
+def checkbutton_3_used():
+    tb_input = input_field.get()
+    tb_name = tb_input + '.tbc'
+    if tb_input:
+        state = checked_state_3.get()
+        save_filter('result_filter', 'testbench', tb_name, state)
+    else:
+        checkbutton_3.deselect()
+        print("No input given.")
+
+
 # Checkbutton SYS-110
 checked_state_1 = tk.IntVar()
 checkbutton_1 = tk.Checkbutton(text='SYS-110',
@@ -45,6 +58,13 @@ checkbutton_2 = tk.Checkbutton(text='SYS-112',
 checkbutton_2.grid(column=0, row=2, padx=20, pady=5)
 
 # Entry for additional testbench
+checked_state_3 = tk.IntVar()
+checkbutton_3 = tk.Checkbutton(text='Other:   ',
+                               variable=checked_state_3,
+                               command=checkbutton_3_used)
+checkbutton_3.grid(column=0, row=3)
+input_field = tk.Entry(width=10)
+input_field.grid(column=0, row=4)
 
 
 # Start button
@@ -62,6 +82,10 @@ with open('filter.json', 'r') as f:
     default = json.load(f)
 
 testbenches = default['result_filter']['testbench']
+for tb in testbenches:
+    if tb not in ['SYS-110.tbc', 'SYS-112.tbc']:
+        save_filter('result_filter', 'testbench', tb, 0)
+
 if 'SYS-110.tbc' in testbenches:
     checkbutton_1.select()
 if 'SYS-112.tbc' in testbenches:

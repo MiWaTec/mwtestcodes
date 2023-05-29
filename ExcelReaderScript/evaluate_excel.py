@@ -197,7 +197,7 @@ def calculate_results():
     # Filter all excel files and combine the data to a single data frame
     df_all_data = None
     for file in all_files:
-        df = pd.read_excel(file, sheet_name='Tabelle1')
+        df = pd.read_excel(file)
         df_all_data = merge_dataframes(df_all_data, df)
         print(df_all_data)
     # Read the data frame and calculate the desired values
