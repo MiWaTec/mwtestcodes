@@ -54,8 +54,8 @@ def merge_dataframes(df1: object, df2: object) -> object:
     return df_merged
 
 
-def extractValuesFromDataframe(df: object, result_filter: dict,
-                               tc_var_dict: dict) -> list:
+def extractValuesFromDf(df: object, result_filter: dict,
+                        tc_var_dict: dict) -> list:
     """This function filters the dataframe based on the given filters.
        The result_filter will filter all relevant data from the dataframe.
        With the tc_var_dict the desired data of the dataframe will be extracted
@@ -171,10 +171,15 @@ func_mapping = {'average_min_max': getAverageMinMax,
                 'total': len}
 
 
-def save_filter(filter_type, key, value, state):
-    # Read json file:
-    with open('filter.json', 'r') as f:
+def read_filter_json(json_file_name):
+    with open(json_file_name) as f:
         data = json.load(f)
+    return data
+
+
+def save_filter(filter_file, filter_type, key, value, state):
+    # Read json file:
+    data = read_filter_json(filter_file)
     # Modify data of the json file
     value_list = data[filter_type][key]
     print(value_list)
@@ -191,7 +196,7 @@ def save_filter(filter_type, key, value, state):
         json.dump(data, f, indent=4)
 
 
-def calculate_results():
+def calculate_results(filter_data):
     # Search for excel files and save them in a list
     all_files = readExcelFiles()
     # Filter all excel files and combine the data to a single data frame
@@ -202,17 +207,17 @@ def calculate_results():
         print(df_all_data)
     # Read the data frame and calculate the desired values
     result_dict = {}
-    for info in data_filter:
+    for info in filter_data['data_filter']:
         # Filter the data necessery for the calculation of current info
-        extracted_values = extractValuesFromDataframe(df_all_data,
-                                                      result_filter,
-                                                      data_filter[info][1])
+        extracted = extractValuesFromDf(df_all_data,
+                                        filter_data['result_filter'],
+                                        filter_data['data_filter'][info][1])
         # Create a list of functions that will be used for calculations
         info_dict = {}
-        list_of_desired_values = data_filter[info][0]
+        list_of_desired_values = filter_data['data_filter'][info][0]
         print(list_of_desired_values)
         for val in list_of_desired_values:
-            calculated_result = func_mapping[val](extracted_values)
+            calculated_result = func_mapping[val](extracted)
             print(calculated_result)
             info_dict[val] = calculated_result
         result_dict[info] = info_dict
