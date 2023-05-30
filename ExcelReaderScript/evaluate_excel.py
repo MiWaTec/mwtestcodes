@@ -151,26 +151,6 @@ def countListElements(value_list: list) -> dict:
     return occurence_dict
 
 
-# Test programm
-result_filter = {'Testcase verdict': ['PASSED', 'FAILED'],
-                 'testbench': ['SYS-110.tbc', 'SYS-112.tbc']}
-
-data_filter = {
-    'First result info': (['average_min_max', 'experienceable_ratio'],
-                          {'Testcase_1': 'R_Variable3',
-                          'Testcase_2': 'R_Variable2'}),
-    'Second result info': (['average_min_max', 'experienceable_ratio'],
-                           {'Testcase_5': 'R_Variable4'}),
-    'Third result info': (['value_occurence'],
-                          {'Testcase_8': 'R_Variable5'})
-}
-
-func_mapping = {'average_min_max': getAverageMinMax,
-                'value_occurence': countListElements,
-                'experienceable_ratio': getSuccessRatio,
-                'total': len}
-
-
 def read_filter_json(json_file_name):
     with open(json_file_name) as f:
         data = json.load(f)
@@ -222,3 +202,9 @@ def calculate_results(filter_data):
             info_dict[val] = calculated_result
         result_dict[info] = info_dict
     print(result_dict)
+
+
+func_mapping = {'average_min_max': getAverageMinMax,
+                'value_occurence': countListElements,
+                'experienceable_ratio': getSuccessRatio,
+                'total': len}
