@@ -5,8 +5,8 @@
             "FAILED"
         ],
         "testbench": [
-            "SYS-112.tbc",
-            "SYS-110.tbc"
+            "SYS-110.tbc",
+            "SYS-112.tbc"
         ]
     },
     "data_filter": {

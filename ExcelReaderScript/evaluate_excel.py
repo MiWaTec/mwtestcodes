@@ -215,6 +215,11 @@ def calculate_results(filter_data: dict) -> dict:
         dict: Dictionary that contains a dictionary with the calculared values
               for each info.
     """
+    # Mapping of the info names and their functions
+    func_mapping = {'average_min_max': getAverageMinMax,
+                    'value_occurence': countListElements,
+                    'experienceable_ratio': getSuccessRatio,
+                    'total': len}
     # Search for excel files and save them in a list
     all_files = readExcelFiles()
     # Filter all excel files and combine the data to a single data frame
@@ -244,9 +249,3 @@ def calculate_results(filter_data: dict) -> dict:
         result_dict[info] = info_dict
     print(result_dict)
     return result_dict
-
-
-func_mapping = {'average_min_max': getAverageMinMax,
-                'value_occurence': countListElements,
-                'experienceable_ratio': getSuccessRatio,
-                'total': len}
