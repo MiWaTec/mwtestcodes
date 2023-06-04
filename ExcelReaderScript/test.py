@@ -1,8 +1,7 @@
-value = 3
-value_list = [0, 1, 2]
-test = value in value_list
-print(test)
-if value:
+import re
+
+test_1 = re.sub('\D', '', 'abc123')
+
+print(test_1)
+if test_1 is not None:
     print("Yes")
-else:
-    print("None")

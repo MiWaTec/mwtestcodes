@@ -78,14 +78,13 @@ def start_button_clicked():
 start_button = tk.Button(text="Calculate", command=start_button_clicked)
 start_button.grid(column=1, row=1, padx=20, pady=5)
 
-# Main program
-# Load default settings
+# Remove all testbenches except the default testbenches from the json file
 default = read_filter_json('filter.json')
 testbenches = default['result_filter']['testbench']
 for tb in testbenches:
     if tb not in ['SYS-110.tbc', 'SYS-112.tbc']:
         save_filter('filter.json', 'result_filter', 'testbench', tb, 0)
-
+# Activate checkboxes of the default testbenches if they are in the json dict
 if 'SYS-110.tbc' in testbenches:
     checkbutton_1.select()
 if 'SYS-112.tbc' in testbenches:

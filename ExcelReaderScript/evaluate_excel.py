@@ -151,13 +151,39 @@ def countListElements(value_list: list) -> dict:
     return occurence_dict
 
 
-def read_filter_json(json_file_name):
+def read_filter_json(json_file_name: str) -> dict:
+    """This function opens a given json file and returns the filter data
+       as dictionary.
+
+    Args:
+        json_file_name (str): Name of the json file or path of the file.
+
+    Returns:
+        dict: Dictionary provided by the json file that contains the filters.
+    """
     with open(json_file_name) as f:
         data = json.load(f)
     return data
 
 
-def save_filter(filter_file, filter_type, key, value, state):
+def save_filter(filter_file: str, filter_type: str, key: str, value: str,
+                state: int):
+    """This function reads the filter json file and compares the value of
+       the given key of the given filter type with the current value state
+       in the UI and changes the value in the filter json file according to
+       the value in the UI.
+
+    Args:
+        filter_file (str): Name or path of the json file.
+        filter_type (str): Name of the filter type which is a key of the
+                           dictionary that is provided from the json file.
+        key (str): Key of the dictionary of the choosen filter type.
+        value (str): Value of the choosen key.
+        state (int): Desired or current state of the UI element. If the state
+                     is 0, the key will be removed from the filter json file.
+                     If the state is 1, the key will be left in the filter
+                     json file.
+    """
     # Read json file:
     data = read_filter_json(filter_file)
     # Modify data of the json file
@@ -176,7 +202,19 @@ def save_filter(filter_file, filter_type, key, value, state):
         json.dump(data, f, indent=4)
 
 
-def calculate_results(filter_data):
+def calculate_results(filter_data: dict) -> dict:
+    """This function calculates the desired values that are given by the
+       filter_data dictionary. The calculated results will be returned as
+       a dictionary.
+
+    Args:
+        filter_data (dict): Dictionary that contains the infos to be
+                            calculated.
+
+    Returns:
+        dict: Dictionary that contains a dictionary with the calculared values
+              for each info.
+    """
     # Search for excel files and save them in a list
     all_files = readExcelFiles()
     # Filter all excel files and combine the data to a single data frame
@@ -192,16 +230,20 @@ def calculate_results(filter_data):
         extracted = extractValuesFromDf(df_all_data,
                                         filter_data['result_filter'],
                                         filter_data['data_filter'][info][1])
-        # Create a list of functions that will be used for calculations
+        # Create a dict that will contain the calculated values of the info
         info_dict = {}
+        # Create a list of functions that will be used for the calculations
         list_of_desired_values = filter_data['data_filter'][info][0]
         print(list_of_desired_values)
+        # Calculate all values of list_of_desired_values
         for val in list_of_desired_values:
             calculated_result = func_mapping[val](extracted)
             print(calculated_result)
             info_dict[val] = calculated_result
+        # Add the calculated results of the info to the return dict
         result_dict[info] = info_dict
     print(result_dict)
+    return result_dict
 
 
 func_mapping = {'average_min_max': getAverageMinMax,
