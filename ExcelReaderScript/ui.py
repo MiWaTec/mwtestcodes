@@ -130,15 +130,11 @@ for tb in testbenches:
     if tb not in default['testbenches']:
         save_filter(json_file_path, 'result_filter', 'testbench', tb, 0)
 # Activate checkboxes of the default testbenches if they are in the json dict
-# if 'SYS-110.tbc' in testbenches:
-#     checkbutton_1.select()
-# if 'SYS-112.tbc' in testbenches:
-#     checkbutton_2.select()
-print("Y")
 checkbox_list = CheckboxCreator.get_all_instances()
 for checkbox in checkbox_list:
     if checkbox.name in testbenches:
         checkbox.checkbutton.select()
 print(checkbox_list)
+
 # Loop for waiting for interaction of the user
 window.mainloop()
