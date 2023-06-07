@@ -1,5 +1,10 @@
 import json
 
+default_settings = {
+    'json_file': 'filter.json',
+    'testbenches': ['SYS-110.tbc', 'SYS-112.tbc']
+}
+
 filters = {
     'result_filter': {
         'Testcase verdict': ['PASSED', 'FAILED'],
@@ -17,15 +22,15 @@ filters = {
 }
 
 
-with open('filter.json', 'w') as f:
-    json.dump(filters, f, indent=4)
+with open('default_settings.json', 'w') as f:
+    json.dump(default_settings, f, indent=4)
     print(f)
 
-with open('filter.json', 'r') as rf:
-    data = json.load(rf)
-    print(data)
-    data['result_filter']['Test_Key'] = 'test_value'
-    print(data)
+# with open('filter.json', 'r') as rf:
+#     data = json.load(rf)
+#     print(data)
+#     data['result_filter']['Test_Key'] = 'test_value'
+#     print(data)
 
 
 # with open('filter.json', 'r') as rf:

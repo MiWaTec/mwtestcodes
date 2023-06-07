@@ -6,7 +6,7 @@
         ],
         "testbench": [
             "SYS-110.tbc",
-            "SYS-112.tbc"
+            "SYS-035.tbc"
         ]
     },
     "data_filter": {
