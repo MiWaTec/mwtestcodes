@@ -1,10 +1,11 @@
 import tkinter as tk
+import tkinter.ttk as tkk
 from evaluate_excel import calculate_results, save_filter, read_filter_json, save_default_settings
 
 
 class CheckboxCreator:
     _instances = []
-    _counter = 4
+    _counter = 3
 
     def __init__(self, name) -> None:
         self.name = name
@@ -13,7 +14,7 @@ class CheckboxCreator:
                                           variable=self.checked_state,
                                           command=self.checkbutton_used)
         self.checkbutton.grid(column=0, row=CheckboxCreator._counter,
-                              sticky='nw', padx=20, pady=5)
+                              sticky='nw', columnspan=2, padx=5, pady=5)
         CheckboxCreator._counter += 1
         CheckboxCreator._instances.append(self)
         for obj in CheckboxCreator._instances:
@@ -35,15 +36,20 @@ class CheckboxCreator:
     def get_all_instances():
         return CheckboxCreator._instances
 
+    def delete_checkbox(self):
+        self.checkbutton.destroy()
 
 
 def btn_tb_add_clicked():
     tb_name = input_tb.get() + '.tbc'
     print(input_tb)
     if tb_name:
-        setting_changed = save_default_settings('default_settings.json',
-                                                'testbenches', tb_name)
-        if setting_changed:
+        default_data = read_filter_json('default_settings.json')
+        tb_list = default_data['testbenches']
+        if tb_name not in tb_list:
+            tb_list.append(tb_name)
+            save_default_settings('default_settings.json',
+                                  'testbenches', tb_list)
             CheckboxCreator(tb_name)
             print('Testbench added.')
         else:
@@ -53,12 +59,21 @@ def btn_tb_add_clicked():
 
 
 def btn_tb_del_clicked():
-    tb_name = input_tb.get()
-    print(input_tb)
-    if tb_name:
-        save_default_settings('default_settings.json', 'testbenches', tb_name)
+    tb_name = input_tb.get() + '.tbc'
+    default_data = read_filter_json('default_settings.json')
+    tb_list = default_data['testbenches']
+    if tb_name in tb_list:
+        checkbox_list = CheckboxCreator.get_all_instances()
+        for checkbox in checkbox_list:
+            if checkbox.name == tb_name:
+                CheckboxCreator.delete_checkbox(checkbox)
+                break
+        tb_list.remove(tb_name)
+        save_default_settings('default_settings.json', 'testbenches', tb_list)
+        save_filter(default_data['json_file'], 'result_filter', 'testbench',
+                    tb_name, 0)
     else:
-        print('No input given.')
+        print('No valid input given.')
 
 
 def start_button_clicked():
@@ -72,47 +87,46 @@ window = tk.Tk()
 # Create title of the window
 window.title('Test Result Calculator')
 # Set size of the window
-window.minsize(width=450, height=200)
+window.minsize(width=400, height=200)
 
 # Label for testbenches to be included
 tb_label = tk.Label(text='Testbenches',
                     font=('Arial', 8, 'bold'))
-tb_label.grid(column=0, row=0, padx=20, pady=5)
+tb_label.grid(column=0, row=0, columnspan=2, sticky='w', padx=10, pady=5)
 
 # Input field for testbenches
-input_tb = tk.Entry(width=13)
-input_tb.grid(column=0, row=1, sticky='nw', padx=20)
+input_tb = tk.Entry(width=16)
+input_tb.grid(column=0, row=1, columnspan=2, sticky='nw', padx=10)
 
 # Add button for testbenches
-btn_tb_add = tk.Button(text="Add", width=10, command=btn_tb_add_clicked)
-btn_tb_add.grid(column=0, row=2, sticky='nw', padx=20, pady=5)
+btn_tb_add = tk.Button(text="Add", width=5, command=btn_tb_add_clicked)
+btn_tb_add.grid(column=0, row=2, sticky='e', padx=5, pady=5)
 
-# Delete button
-btn_tb_del = tk.Button(text="Del", width=10, command=btn_tb_del_clicked)
-btn_tb_del.grid(column=0, row=3, sticky='nw', padx=20, pady=5)
+# Delete button for testbenches
+btn_tb_del = tk.Button(text="Delete", width=5, command=btn_tb_del_clicked)
+btn_tb_del.grid(column=1, row=2, sticky='w', padx=5, pady=5)
 
 # Label for json file path
 json_file_label = tk.Label(text='Load filter data from:',
                            font=('Arial', 8, 'bold'))
-json_file_label.grid(column=1, row=0, sticky='w')
+json_file_label.grid(column=2, row=0, sticky='w')
 
 # Input line for file path
 json_file_input = tk.Entry(width=40)
-json_file_input.grid(column=1, row=1, columnspan=2, sticky='w')
+json_file_input.grid(column=2, row=1, columnspan=2, sticky='w')
 
 # Label for target location for the report
 report_excel_label = tk.Label(text='Save report excel in:',
                               font=('Arial', 8, 'bold'))
-report_excel_label.grid(column=1, row=2, sticky='w')
+report_excel_label.grid(column=2, row=2, sticky='w')
 
 # Input line for location of the report excel
 loc_report_excel = tk.Entry(width=40)
-loc_report_excel.grid(column=1, row=3, columnspan=2, sticky='w')
-
+loc_report_excel.grid(column=2, row=3, columnspan=2, sticky='w')
 
 # Start button
 start_button = tk.Button(text="Calculate", command=start_button_clicked)
-start_button.grid(column=2, row=4, sticky='e', pady=5)
+start_button.grid(column=3, row=4, sticky='e', pady=5)
 
 # Set default settings on the UI
 # Load default data dict

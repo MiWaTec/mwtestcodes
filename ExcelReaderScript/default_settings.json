@@ -1,8 +1,7 @@
 {
     "json_file": "filter.json",
     "testbenches": [
-        "SYS-110.tbc",
-        "SYS-112.tbc",
-        "SYS-035.tbc"
+        "SYS-035.tbc",
+        "SYS-110.tbc"
     ]
 }

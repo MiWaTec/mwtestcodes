@@ -202,22 +202,13 @@ def save_filter(filter_file: str, filter_type: str, key: str, value: str,
         json.dump(data, f, indent=4)
 
 
-def save_default_settings(settings_file, setting, val):
+def save_default_settings(settings_file: str, key: str, val):
     # Read json file
     settings_dict = read_filter_json(settings_file)
-    return_var = None
     # Modify data of the json file
-    if (isinstance(settings_dict[setting], list) and
-       val not in settings_dict[setting]):
-        settings_dict[setting].append(val)
-        return_var = True
-    elif not isinstance(settings_dict[setting], list):
-        settings_dict[setting] = val
-        return_var = True
-    # Overwrite json file with new data
+    settings_dict[key] = val
     with open(settings_file, 'w') as f:
         json.dump(settings_dict, f, indent=4)
-    return return_var
 
 
 def calculate_results(filter_data: dict) -> dict:

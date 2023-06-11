@@ -94,6 +94,16 @@ for item in fruits:
 listbox.bind("<<ListboxSelect>>", listbox_used)
 listbox.pack()
 
+# Dropdown
+var = StringVar(window)
+var.set("one")
+val_list = ["one", "two", "three"]
+w = OptionMenu(window, var, *val_list)
+w.pack()
+
+# Combobox
+combo = Combobox()
+
 # Window waits for interaction of the user. The mainloop should be
 # at the end of the code.
 window.mainloop()
