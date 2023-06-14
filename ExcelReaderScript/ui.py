@@ -27,22 +27,42 @@ class CheckboxCreator:
         print(len(CheckboxCreator._instances))
 
     def checkbutton_used(self):
+        """This function will be executed after a testbench checkbox of the
+           UI was clicked. The state of the checkbox will be saved in the
+           filter data json file. If the state is deactivated, the testbench
+           will be removed from the filter file. If the state is activated, the
+           testbench name will be added in the filter file.
+        """
         json_file_path = json_file_input.get()
         state = self.checked_state.get()
         save_filter(json_file_path, 'result_filter', 'testbench',
                     self.name, state)
-        print("class executed")
 
-    def get_all_instances():
+    def get_all_instances() -> list:
+        """This function returns a list of all created instances of the class.
+
+        Returns:
+            list: A list of all instances of the class that were instantiated.
+        """
         return CheckboxCreator._instances
 
-    def delete_checkbox(self):
+    def delete_checkbox(self: object):
+        """This function deletes the given class object.
+
+        Args:
+            self (object): Instance of the class that will be deleted.
+        """
         self.checkbutton.destroy()
 
 
 def btn_tb_add_clicked():
+    """This function will be executed after the 'Add' button of the
+       UI was clicked. A new checkbox will be created in the UI with
+       the name which was provided through the input field. If a
+       checkbox with the same name already exists or no input was
+       given in the input field, no new checkbox will be created.
+    """
     tb_name = input_tb.get() + '.tbc'
-    print(input_tb)
     if tb_name:
         default_data = read_filter_json('default_settings.json')
         tb_list = default_data['testbenches']
@@ -59,6 +79,10 @@ def btn_tb_add_clicked():
 
 
 def btn_tb_del_clicked():
+    """This function will be executed after the 'Delete' button of the
+       UI was clicked. The checkbox with the name which was given through
+       the input field will be deleted.
+    """
     tb_name = input_tb.get() + '.tbc'
     default_data = read_filter_json('default_settings.json')
     tb_list = default_data['testbenches']
@@ -77,6 +101,10 @@ def btn_tb_del_clicked():
 
 
 def start_button_clicked():
+    """This function will be executed after the 'Start' button of the
+       UI was clicked. The calculation of the desired values based on the
+       filter data of the filter json file will be started.
+    """
     json_file_path = json_file_input.get()
     filter_data = read_filter_json(json_file_path)
     calculate_results(filter_data)
@@ -128,7 +156,9 @@ loc_report_excel.grid(column=2, row=3, columnspan=2, sticky='w')
 start_button = tk.Button(text="Calculate", command=start_button_clicked)
 start_button.grid(column=3, row=4, sticky='e', pady=5)
 
+
 # Set default settings on the UI
+
 # Load default data dict
 default = read_filter_json('default_settings.json')
 # Set default json file path

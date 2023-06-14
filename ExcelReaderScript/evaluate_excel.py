@@ -203,6 +203,17 @@ def save_filter(filter_file: str, filter_type: str, key: str, value: str,
 
 
 def save_default_settings(settings_file: str, key: str, val):
+    """This function opens the given settings file and converts the
+       json data into a dict. The value of the given key will be
+       overwritten with the given value. Afterwards the changed data
+       will be converted to a json file again.
+
+    Args:
+        settings_file (str): File name or file path that will be used.
+        key (str): Key of the dictionary whose value will be changed.
+        val (_type_): New value that will overwrite the value of the
+                      given key.
+    """
     # Read json file
     settings_dict = read_filter_json(settings_file)
     # Modify data of the json file
