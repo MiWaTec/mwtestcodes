@@ -269,3 +269,26 @@ def calculate_results(filter_data: dict) -> dict:
         result_dict[info] = info_dict
     print(result_dict)
     return result_dict
+
+
+def open_excel_template(excel_file):
+    df = pd.read_excel(excel_file)
+    return df
+
+
+def write_results_in_excel(excel_file, result_dict):
+    df = pd.read_excel(excel_file)
+    print(df)
+    print(df.columns)
+    ind = df[df['Unnamed: 0'] == 'First result info'].index[0]
+    print(ind)
+    print(result_dict)
+    for row in df.iterrows():
+        row_idx, d = row
+        if d['Unnamed: 0'] in result_dict:
+            key = d['Unnamed: 0']
+            val = result_dict[key]
+            print(val)
+            print(row_idx)
+            df._set_value(row_idx, 'average', val['experienceable_ratio'])
+            print(df)

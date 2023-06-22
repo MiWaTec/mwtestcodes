@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as tkk
-from evaluate_excel import calculate_results, save_filter, read_filter_json, save_default_settings
+from evaluate_excel import calculate_results, save_filter, read_filter_json,\
+                           save_default_settings, write_results_in_excel
 
 
 class CheckboxCreator:
@@ -107,8 +108,9 @@ def start_button_clicked():
     """
     json_file_path = json_file_input.get()
     filter_data = read_filter_json(json_file_path)
-    calculate_results(filter_data)
+    res = calculate_results(filter_data)
     print('Calculation finished')
+    write_results_in_excel('EvaluationExcel.xlsx', res)
 
 
 window = tk.Tk()
