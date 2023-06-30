@@ -81,11 +81,7 @@ def extractValuesFromDf(df: object, result_filter: dict,
     return value_list
 
 
-def getTotalAmountOfValues(value_list):
-    return len(value_list)
-
-
-def getSuccessRatio(value_list: list) -> int:
+def getSuccessRatio(value_list: list, *args) -> int:
     """This function calculates the percentage of values
        that indicates successful results. A value is considered
        a success if it is True or greater than 0.
@@ -104,7 +100,7 @@ def getSuccessRatio(value_list: list) -> int:
     return round(success / total * 100)
 
 
-def getAverageMinMax(value_list: list) -> tuple:
+def getAverageMinMax(value_list: list, *args) -> tuple:
     """This function calculates the average value of a list of numbers.
        In addition, the minimum and the maximum value of the list will
        be determined. Before the calculation, all values less than 0 are
@@ -124,7 +120,22 @@ def getAverageMinMax(value_list: list) -> tuple:
     return {'average': average_value, 'min': min_value, 'max': max_value}
 
 
-def countListElements(value_list: list) -> dict:
+def getAverageValue(value_list, *args):
+    filtered_list = [x for x in value_list if x >= 0]
+    return mean(filtered_list)
+
+
+def getMinValue(value_list, *args):
+    filtered_list = [x for x in value_list if x >= 0]
+    return min(filtered_list)
+
+
+def getMaxValue(value_list, *args):
+    filtered_list = [x for x in value_list if x >= 0]
+    return max(filtered_list)
+
+
+def countListElements(value_list: list, *args) -> dict:
     """This function combines the list of lists (the inner lists are present as
        strings which will be converted to lists) to a single list and counts
        the number of occurences of each element in the merged list.
@@ -149,6 +160,15 @@ def countListElements(value_list: list) -> dict:
         count = merged_lists.count(element)
         occurence_dict[element] = count
     return occurence_dict
+
+
+def getTotalAmount(value_list, key):
+    if all(isinstance(x, str) for x in value_list):
+        occurence_dict = countListElements(value_list)
+        total = occurence_dict[key]
+    else:
+        total = len(value_list)
+    return total
 
 
 def read_filter_json(json_file_name: str) -> dict:
@@ -237,9 +257,12 @@ def calculate_results(filter_data: dict) -> dict:
     """
     # Mapping of the info names and their functions
     func_mapping = {'average_min_max': getAverageMinMax,
+                    'average': getAverageValue,
+                    'min': getMinValue,
+                    'max': getMaxValue,
                     'value_occurence': countListElements,
-                    'experienceable_ratio': getSuccessRatio,
-                    'total': len}
+                    'experienceable ratio': getSuccessRatio,
+                    'total': getTotalAmount}
     # Search for excel files and save them in a list
     all_files = readExcelFiles()
     # Filter all excel files and combine the data to a single data frame
@@ -255,6 +278,7 @@ def calculate_results(filter_data: dict) -> dict:
         extracted = extractValuesFromDf(df_all_data,
                                         filter_data['result_filter'],
                                         filter_data['data_filter'][info][1])
+        print(extracted)
         # Create a dict that will contain the calculated values of the info
         info_dict = {}
         # Create a list of functions that will be used for the calculations
@@ -262,7 +286,7 @@ def calculate_results(filter_data: dict) -> dict:
         print(list_of_desired_values)
         # Calculate all values of list_of_desired_values
         for val in list_of_desired_values:
-            calculated_result = func_mapping[val](extracted)
+            calculated_result = func_mapping[val](extracted, info)
             print(calculated_result)
             info_dict[val] = calculated_result
         # Add the calculated results of the info to the return dict
@@ -276,19 +300,22 @@ def open_excel_template(excel_file):
     return df
 
 
-def write_results_in_excel(excel_file, result_dict):
+def write_results_in_template(excel_file, result_dict):
     df = pd.read_excel(excel_file)
-    print(df)
-    print(df.columns)
-    ind = df[df['Unnamed: 0'] == 'First result info'].index[0]
-    print(ind)
-    print(result_dict)
+    # ind = df[df['Unnamed: 0'] == 'First result info'].index[0]
     for row in df.iterrows():
         row_idx, d = row
         if d['Unnamed: 0'] in result_dict:
-            key = d['Unnamed: 0']
-            val = result_dict[key]
-            print(val)
-            print(row_idx)
-            df._set_value(row_idx, 'average', val['experienceable_ratio'])
-            print(df)
+            for calc_val in result_dict[d['Unnamed: 0']]:
+                df._set_value(row_idx, calc_val,
+                              result_dict[d['Unnamed: 0']][calc_val])
+            # df._set_value(row_idx, 'average', val['average'])
+    return df
+
+
+def dataframe_to_excel(df):
+    writer = pd.ExcelWriter('Output3.xlsx', engine='xlsxwriter')
+    df.columns = [col if 'Unnamed' not in col else '' for col in df.columns]
+    df.to_excel(writer, index=False)
+    writer.save()
+    print("Calculation finished!")

@@ -9,8 +9,12 @@ print(df)
 
 a = df.query('`Testcase verdict` in ["PASSED", "FAILED"]')
 b = df.query('`Testcase verdict` in ["PASSED"]')
+# Set value in a specific position (row_index, column_name, value)
 a._set_value(16, 'File name', 14)
+# insert an empty column (column_number, column_name, value)
+a.insert(2, ' ', None)
 writer = pd.ExcelWriter('Output2.xlsx', engine='xlsxwriter')
+# Add multiple dataframes to excel -> Can be used for adding empty rows
 a.to_excel(writer, sheet_name="Tabelle1", index=False)
 b.to_excel(writer, sheet_name="Tabelle1", startrow=20, header=False, index=False)
 writer.save()

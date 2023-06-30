@@ -6,14 +6,17 @@
         ],
         "testbench": [
             "SYS-110.tbc",
-            "SYS-035.tbc"
+            "SYS-112.tbc"
         ]
     },
     "data_filter": {
         "First result info": [
             [
-                "average_min_max",
-                "experienceable_ratio"
+                "average",
+                "min",
+                "max",
+                "experienceable ratio",
+                "total"
             ],
             {
                 "Testcase_1": "R_Variable3",
@@ -22,8 +25,10 @@
         ],
         "Second result info": [
             [
-                "average_min_max",
-                "experienceable_ratio"
+                "average",
+                "min",
+                "max",
+                "experienceable ratio"
             ],
             {
                 "Testcase_5": "R_Variable4"
@@ -31,7 +36,15 @@
         ],
         "Third result info": [
             [
-                "value_occurence"
+                "experienceable ratio"
+            ],
+            {
+                "Testcase_8": "R_Variable3"
+            }
+        ],
+        "Navigation": [
+            [
+                "total"
             ],
             {
                 "Testcase_8": "R_Variable5"
