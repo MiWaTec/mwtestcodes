@@ -4,19 +4,23 @@ import os
 import json
 
 
-def readExcelFiles() -> list:
-    """This function returns a list of all excel files that are in the same
-       folder.
+def getExcelFiles(folder_path) -> list:
+    """This function searches for all excel files that are located inside the
+       given folder and their subfolders. The paths of all found excel files
+       will be returned as a list.
+    Args:
+        folder_path (str): Path to the folder that contains the result data
+                           as excel files.
 
     Returns:
-        excel_list (list): List that contains all excel file names in the
-                           folder as strings.
+        excel_list (list): List that contains the paths of all found excel
+                           files as strings.
     """
-    file_list = os.listdir()
     excel_list = []
-    for file in file_list:
-        if file[-4:] == 'xlsx':
-            excel_list.append(file)
+    for folder, subfolder, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.xlsx') or file.endswith('.xls'):
+                excel_list.append(os.path.join(folder, file))
     return excel_list
 
 
@@ -242,7 +246,7 @@ def save_default_settings(settings_file: str, key: str, val):
         json.dump(settings_dict, f, indent=4)
 
 
-def calculate_results(filter_data: dict) -> dict:
+def calculate_results(filter_data: dict, folder_excel: str) -> dict:
     """This function calculates the desired values that are given by the
        filter_data dictionary. The calculated results will be returned as
        a dictionary.
@@ -250,6 +254,7 @@ def calculate_results(filter_data: dict) -> dict:
     Args:
         filter_data (dict): Dictionary that contains the infos to be
                             calculated.
+        folder_excel (str): Path to the folder that contains the excel files.
 
     Returns:
         dict: Dictionary that contains a dictionary with the calculared values
@@ -264,7 +269,7 @@ def calculate_results(filter_data: dict) -> dict:
                     'experienceable ratio': getSuccessRatio,
                     'total': getTotalAmount}
     # Search for excel files and save them in a list
-    all_files = readExcelFiles()
+    all_files = getExcelFiles(folder_excel)
     # Filter all excel files and combine the data to a single data frame
     df_all_data = None
     for file in all_files:
@@ -295,26 +300,38 @@ def calculate_results(filter_data: dict) -> dict:
     return result_dict
 
 
-def open_excel_template(excel_file):
-    df = pd.read_excel(excel_file)
-    return df
+def write_results_in_template(template_file: str, result_dict: dict) -> object:
+    """This function converts the template file to a dataframe and writes in
+       the data of the result dict. The resulting dataframe will be returned.
 
+    Args:
+        template_file (str): Path to the template excel file.
+        result_dict (dict): Dictionary that contains the data that will be
+                            written into dataframe which was generated from
+                            the template file.
 
-def write_results_in_template(excel_file, result_dict):
-    df = pd.read_excel(excel_file)
-    # ind = df[df['Unnamed: 0'] == 'First result info'].index[0]
+    Returns:
+        object: Dataframe that contains the data of the result dict.
+    """
+    df = pd.read_excel(template_file)
     for row in df.iterrows():
         row_idx, d = row
         if d['Unnamed: 0'] in result_dict:
             for calc_val in result_dict[d['Unnamed: 0']]:
                 df._set_value(row_idx, calc_val,
                               result_dict[d['Unnamed: 0']][calc_val])
-            # df._set_value(row_idx, 'average', val['average'])
     return df
 
 
-def dataframe_to_excel(df):
-    writer = pd.ExcelWriter('Output3.xlsx', engine='xlsxwriter')
+def dataframe_to_excel(df: object, report_excel_folder, report_excel_name):
+    """This function writes the content of the given dataframe into an
+       excel file.
+
+    Args:
+        df (object): Dataframe that will be written into an excel file.
+    """
+    file_path = os.path.join(report_excel_folder, report_excel_name + '.xlsx')
+    writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
     df.columns = [col if 'Unnamed' not in col else '' for col in df.columns]
     df.to_excel(writer, index=False)
     writer.save()
