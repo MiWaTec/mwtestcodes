@@ -1,6 +1,6 @@
 {
-    "json_file": "filter.json",
-    "nightly_results_folder": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript",
+    "json_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/filter.json",
+    "results_folder": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript",
     "template_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/EvaluationExcel.xlsx",
     "location_report": "C:/Users/Michael/Desktop/mwtestcodes/Report_Folder",
     "report_name": "Report_1",
