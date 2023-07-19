@@ -1,9 +1,24 @@
 import json
 
 default_settings = {
-    'json_file': 'filter.json',
-    'testbenches': ['SYS-110.tbc', 'SYS-112.tbc']
+    'Setting_1': {
+                 "json_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/filter.json",
+                 "results_folder": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript",
+                 "template_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/EvaluationExcel.xlsx",
+                 "location_report": "C:/Users/Michael/Desktop/mwtestcodes/Report_Folder",
+                 "report_name": "Report_1",
+                 "testbenches": ["SYS-112.tbc", "SYS-110.tbc"]
+    },
+    'Setting_2': {
+                 "json_file": "",
+                 "results_folder": "",
+                 "template_file": "",
+                 "location_report": "",
+                 "report_name": "",
+                 "testbenches": [""]
+    }
 }
+
 
 filters = {
     'result_filter': {

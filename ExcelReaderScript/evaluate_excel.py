@@ -125,17 +125,17 @@ def getAverageMinMax(value_list: list, *args) -> tuple:
 
 
 def getAverageValue(value_list, *args):
-    filtered_list = [x for x in value_list if x >= 0]
+    filtered_list = [float(x) for x in value_list if float(x) >= 0]
     return mean(filtered_list)
 
 
 def getMinValue(value_list, *args):
-    filtered_list = [x for x in value_list if x >= 0]
+    filtered_list = [float(x) for x in value_list if float(x) >= 0]
     return min(filtered_list)
 
 
 def getMaxValue(value_list, *args):
-    filtered_list = [x for x in value_list if x >= 0]
+    filtered_list = [float(x) for x in value_list if float(x) >= 0]
     return max(filtered_list)
 
 
@@ -185,6 +185,7 @@ def read_filter_json(json_file_name: str) -> dict:
     Returns:
         dict: Dictionary provided by the json file that contains the filters.
     """
+    print(json_file_name)
     with open(json_file_name) as f:
         data = json.load(f)
     return data
@@ -226,7 +227,8 @@ def save_filter(filter_file: str, filter_type: str, key: str, value: str,
         json.dump(data, f, indent=4)
 
 
-def save_default_settings(settings_file: str, key: str, val):
+def save_default_settings(settings_file: str, setting_name: str,
+                          key: str, val):
     """This function opens the given settings file and converts the
        json data into a dict. The value of the given key will be
        overwritten with the given value. Afterwards the changed data
@@ -234,6 +236,7 @@ def save_default_settings(settings_file: str, key: str, val):
 
     Args:
         settings_file (str): File name or file path that will be used.
+        setting_name (str): Name of the setting that will be modified.
         key (str): Key of the dictionary whose value will be changed.
         val (_type_): New value that will overwrite the value of the
                       given key.
@@ -241,7 +244,7 @@ def save_default_settings(settings_file: str, key: str, val):
     # Read json file
     settings_dict = read_filter_json(settings_file)
     # Modify data of the json file
-    settings_dict[key] = val
+    settings_dict[setting_name][key] = val
     with open(settings_file, 'w') as f:
         json.dump(settings_dict, f, indent=4)
 

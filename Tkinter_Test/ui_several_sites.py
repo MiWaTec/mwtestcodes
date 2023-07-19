@@ -1,46 +1,40 @@
 import tkinter as tk
 from tkinter import messagebox
 
-def open_file():
-    messagebox.showinfo("Datei", "Datei öffnen")
+class UI:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("UI mit Menübar")
 
-def save_file():
-    messagebox.showinfo("Datei", "Datei speichern")
+        # Menüleiste erstellen
+        menubar = tk.Menu(self.root)
+        self.root.config(menu=menubar)
 
-def setup():
-    messagebox.showinfo("Setup", "Einstellungen ändern")
+        # Datei-Menü
+        file_menu = tk.Menu(menubar, tearoff=0)
+        file_menu.add_command(label="Seite 1", command=self.open_page1)
+        file_menu.add_command(label="Seite 2", command=self.open_page2)
+        file_menu.add_command(label="Seite 3", command=self.open_page3)
+        file_menu.add_separator()
+        file_menu.add_command(label="Beenden", command=self.root.quit)
+        menubar.add_cascade(label="Datei", menu=file_menu)
 
-def help():
-    messagebox.showinfo("Hilfe", "Hilfe aufrufen")
+        # Seiten-Label
+        self.page_label = tk.Label(self.root, text="Willkommen zur Startseite", font=("Helvetica", 18))
+        self.page_label.pack(pady=50)
 
-# Hauptfenster erstellen
-root = tk.Tk()
+    def open_page1(self):
+        self.page_label.config(text="Seite 1\nNummerierung: 1")
 
-# Funktionen für Menübefehle
+    def open_page2(self):
+        self.page_label.config(text="Seite 2\nNummerierung: 2")
 
-# Menüleiste erstellen
-menubar = tk.Menu(root)
+    def open_page3(self):
+        self.page_label.config(text="Seite 3\nNummerierung: 3")
 
-# Datei-Menü
-file_menu = tk.Menu(menubar, tearoff=0)
-file_menu.add_command(label="Öffnen", command=open_file)
-file_menu.add_command(label="Speichern", command=save_file)
-file_menu.add_separator()
-file_menu.add_command(label="Beenden", command=root.quit)
-menubar.add_cascade(label="Datei", menu=file_menu)
+    def run(self):
+        self.root.mainloop()
 
-# Setup-Menü
-setup_menu = tk.Menu(menubar, tearoff=0)
-setup_menu.add_command(label="Einstellungen", command=setup)
-menubar.add_cascade(label="Setup", menu=setup_menu)
-
-# Hilfe-Menü
-help_menu = tk.Menu(menubar, tearoff=0)
-help_menu.add_command(label="Hilfe anzeigen", command=help)
-menubar.add_cascade(label="Hilfe", menu=help_menu)
-
-# Menüleiste dem Hauptfenster hinzufügen
-root.config(menu=menubar)
-
-# Hauptfenster starten
-root.mainloop()
+# UI starten
+ui = UI()
+ui.run()

@@ -4,7 +4,7 @@
             "PASSED",
             "FAILED"
         ],
-        "testbench": [
+        "tbc": [
             "SYS-110.tbc",
             "SYS-112.tbc"
         ]
