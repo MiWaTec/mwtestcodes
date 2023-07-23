@@ -12,7 +12,8 @@ class ButtonCreator:
 
     def __init__(self, name) -> None:
         self.name = name
-        self.setting_button = tk.Button(page1, text=self.name,
+        self.setting_button = tk.Button(pg1_available_set_frame,
+                                        text=self.name,
                                         command=self.setting_button_used,
                                         width=20, height=2)
         self.setting_button.grid(column=1, row=ButtonCreator._counter,
@@ -48,7 +49,8 @@ class CheckboxCreator:
     def __init__(self, name) -> None:
         self.name = name
         self.checked_state = tk.IntVar()
-        self.checkbutton = tk.Checkbutton(page3, text=self.name[:-4],
+        self.checkbutton = tk.Checkbutton(testbenches_frame,
+                                          text=self.name[:-4],
                                           variable=self.checked_state,
                                           command=self.checkbutton_used)
         self.checkbutton.grid(column=0, row=CheckboxCreator._counter+4,
@@ -329,21 +331,27 @@ setup_menu.add_command(label='Configurate filter', command=menubar_go_to_setup)
 page1 = tk.Frame(window)
 page1.grid(row=0, column=0, sticky='nsew')
 
-# Label for available settings
-available_set = tk.Label(page1, text='Available settings:',
-                         font=('Arial', 14, 'bold'))
-available_set.grid(row=0, column=0, padx=10, pady=5)
+# Page1 / Frame for available settings
+pg1_available_set_frame = tk.LabelFrame(page1, text='Available settings', bd=2,
+                                        relief='ridge')
+pg1_available_set_frame.grid(row=1, column=1, sticky='nsew', padx=10, pady=5)
+
+# Label for options
+options_frame = tk.LabelFrame(page1, text='Options', bd=2,
+                              relief='ridge', height=150, width=200)
+options_frame.grid(row=1, column=0, sticky='nsew', padx=10, pady=5)
+
 # Button for creating a new setting
-btn_new_setting = tk.Button(page1, text='Create new setting', width=16,
-                            height=1, command=lambda:
+btn_new_setting = tk.Button(options_frame, text='Create new setting',
+                            width=16, height=1, command=lambda:
                             create_setting())
 btn_new_setting.grid(column=0, row=1, sticky='we', padx=10, pady=5)
 # Button for removing an existing setting
-btn_create_new_setting = tk.Button(page1, text='Remove setting', width=16,
-                                   height=1, command=lambda:
+btn_create_new_setting = tk.Button(options_frame, text='Remove setting',
+                                   width=16, height=1, command=lambda:
                                    remove_setting(input_del_setting.get()))
 btn_create_new_setting.grid(column=0, row=2, sticky='we', padx=10, pady=5)
-input_del_setting = tk.Entry(page1, width=16)
+input_del_setting = tk.Entry(options_frame, width=16)
 input_del_setting.grid(column=0, row=3, sticky='we', padx=10, pady=5)
 
 
@@ -372,8 +380,13 @@ btn_set_new_setting.grid(column=1, row=3, sticky='n')
 page3 = tk.Frame(window)
 page3.grid(row=0, column=0, sticky='nsew')
 
+# Page 3 / Frame for name of the setting
+setting_name_frame = tk.Frame(page3, bd=1, relief='raised')
+setting_name_frame.grid(column=0, row=0, columnspan=2, sticky='nsew', padx=10,
+                        pady=5)
+
 # Label for name of the setting
-setting_label = tk.Label(page3, text='',
+setting_label = tk.Label(setting_name_frame, text='',
                          font=('Arial', 8, 'bold'))
 setting_label.grid(column=0, row=0, columnspan=2, sticky='w', padx=10, pady=5)
 
@@ -382,123 +395,140 @@ tb_label = tk.Label(page3, text='Testbenches',
                     font=('Arial', 8, 'bold'))
 tb_label.grid(column=0, row=1, columnspan=2, sticky='w', padx=10, pady=5)
 
+# Page 3 / Frame for adding and deleting testbenches
+testbenches_frame = tk.LabelFrame(page3, text='Testbenches', bd=2,
+                                  relief='ridge')
+testbenches_frame.grid(row=1, column=0, sticky='nsew', padx=10, pady=5)
+
 # Input field for testbenches
-input_tb = tk.Entry(page3, width=16)
+input_tb = tk.Entry(testbenches_frame, width=16)
 input_tb.grid(column=0, row=2, columnspan=2, sticky='nw', padx=10)
 
 # Add button for testbenches
-btn_tb_add = tk.Button(page3, text='Add', width=5, command=btn_tb_add_clicked)
+btn_tb_add = tk.Button(testbenches_frame, text='Add', width=5,
+                       command=btn_tb_add_clicked)
 btn_tb_add.grid(column=0, row=3, sticky='e', padx=5, pady=5)
 
 # Delete button for testbenches
-btn_tb_del = tk.Button(page3, text='Delete', width=5,
+btn_tb_del = tk.Button(testbenches_frame, text='Delete', width=5,
                        command=btn_tb_del_clicked)
 btn_tb_del.grid(column=1, row=3, sticky='w', padx=5, pady=5)
 
+# Page 3 / Frame for configurations
+config_frame = tk.LabelFrame(page3, text='Configuration', bd=2,
+                             relief='ridge', height=150, width=200)
+config_frame.grid(row=1, column=1, sticky='nsew', padx=10, pady=5)
+
 # Label for json file path
-json_file_label = tk.Label(page3, text='Load filter file:',
+json_file_label = tk.Label(config_frame, text='Load filter file:',
                            font=('Arial', 8, 'bold'))
 json_file_label.grid(column=2, row=1, sticky='w')
 
 # Input line for json file path
-json_file_input = tk.Entry(page3, width=60)
-json_file_input.grid(column=2, row=2, columnspan=2, sticky='w')
-btn_browse_filter = tk.Button(page3, text='Browse', width=7,
+json_file_input = tk.Entry(config_frame, width=60)
+json_file_input.grid(column=2, row=2, columnspan=2, sticky='w', padx=5, pady=5)
+btn_browse_filter = tk.Button(config_frame, text='Browse', width=7,
                               command=lambda: browse_file(json_file_input,
                                                           'json_file'))
 btn_browse_filter.grid(column=4, row=2, sticky='w')
 
 # Label for folder with excel files
-excel_folder_label = tk.Label(page3, text='Folder with nightly results',
+excel_folder_label = tk.Label(config_frame, text='Folder with nightly results',
                               font=('Arial', 8, 'bold'))
 excel_folder_label.grid(column=2, row=3, sticky='w')
 
 # Input line for folder path with nightly results
-nightlyres_input = tk.Entry(page3, width=60)
+nightlyres_input = tk.Entry(config_frame, width=60)
 nightlyres_input.grid(column=2, row=4, columnspan=2, sticky='w')
-btn_browse_results = tk.Button(page3, text='Browse', width=7,
+btn_browse_results = tk.Button(config_frame, text='Browse', width=7,
                                command=lambda: browse_folder(nightlyres_input,
                                                              'results_folder'))
 btn_browse_results.grid(column=4, row=4, sticky='w')
 
 # Label for template to be used
-report_excel_label = tk.Label(page3, text='Load template file:',
+report_excel_label = tk.Label(config_frame, text='Load template file:',
                               font=('Arial', 8, 'bold'))
 report_excel_label.grid(column=2, row=5, sticky='w')
 
 # Input line for template to be used
-template_excel = tk.Entry(page3, width=60)
+template_excel = tk.Entry(config_frame, width=60)
 template_excel.grid(column=2, row=6, columnspan=2, sticky='n', pady=2)
-btn_browse_template = tk.Button(page3, text='Browse', width=7,
+btn_browse_template = tk.Button(config_frame, text='Browse', width=7,
                                 command=lambda: browse_file(template_excel,
                                                             'template_file'))
 btn_browse_template.grid(column=4, row=6, sticky='n')
 
 # Label for target location for the report
-report_excel_label = tk.Label(page3, text='Save report excel in:',
+report_excel_label = tk.Label(config_frame, text='Save report excel in:',
                               font=('Arial', 8, 'bold'))
 report_excel_label.grid(column=2, row=7, sticky='w')
 
 # Input line for location of the report excel
-loc_report_excel = tk.Entry(page3, width=60)
+loc_report_excel = tk.Entry(config_frame, width=60)
 loc_report_excel.grid(column=2, row=8, columnspan=2, sticky='n', pady=2)
-btn_browse_folder = tk.Button(page3, text='Browse', width=7,
+btn_browse_folder = tk.Button(config_frame, text='Browse', width=7,
                               command=lambda: browse_folder(loc_report_excel,
                                                             'location_report'))
 btn_browse_folder.grid(column=4, row=8, sticky='n')
 
 # Label for name of the report file
-report_file_name_label = tk.Label(page3, text='Report file name',
+report_file_name_label = tk.Label(config_frame, text='Report file name',
                                   font=('Arial', 8, 'bold'))
 report_file_name_label.grid(column=2, row=9, sticky='w')
 
 # Input line for the name of the report file
-report_file_name = tk.Entry(page3, width=60)
-report_file_name.grid(column=2, row=10, columnspan=2, sticky='n')
+report_file_name = tk.Entry(config_frame, width=60)
+report_file_name.grid(column=2, row=10, columnspan=2, sticky='n', pady=(0, 5))
+
+# Page 3 / Frame for start button
+start_btn_frame = tk.Frame(page3)
+start_btn_frame.grid(column=1, row=2, columnspan=2, sticky='nsew', padx=10,
+                     pady=5)
 
 # Start button
-start_button = tk.Button(page3, text='Calculate', width=7,
+start_button = tk.Button(start_btn_frame, text='Calculate', width=7,
                          command=start_button_clicked)
-start_button.grid(column=4, row=11, sticky='e', pady=10)
-
+start_button.grid(column=0, row=0, sticky='e', pady=(0, 5))
 
 # Page 4
 page4 = tk.Frame(window)
 page4.grid(row=0, column=0, sticky='nsew')
 
+# Page 4 / Frame for title
+pg4_title_frame = tk.Frame(page4, bd=1, relief='raised')
+pg4_title_frame.grid(row=0, column=0, sticky='nsew', padx=10, pady=5)
+
 # Label for title of creating a filter
-title_frame = tk.Frame(page4, bd=1, relief='raised')
-title_frame.grid(row=0, column=0, sticky='nsew', padx=10)
-filter_label = tk.Label(title_frame, text='Configurate filter',
-                        font=('Arial', 14, 'bold'))
+filter_label = tk.Label(pg4_title_frame, text='Configurate filter',
+                        font=('Arial', 12, 'bold'))
 filter_label.grid(row=0, column=0, sticky='w', padx=10, pady=5)
 
 # Page 4 / Frame for filter
-filter_frame = tk.LabelFrame(page4, text='Filter', bd=2, relief='ridge')
-filter_frame.grid(row=1, column=0, sticky='nsew', padx=10, pady=5)
+pg4_filter_frame = tk.LabelFrame(page4, text='Filter', bd=2, relief='ridge')
+pg4_filter_frame.grid(row=1, column=0, sticky='nsew', padx=10, pady=5)
 
 # Label for sideheader
-sideheader_label = tk.Label(filter_frame, text='Sideheader',
+sideheader_label = tk.Label(pg4_filter_frame, text='Sideheader',
                             font=('Arial', 8, 'bold'))
 sideheader_label.grid(column=0, row=1, padx=10)
 
 # Label for header
-header_label = tk.Label(filter_frame, text='Header',
+header_label = tk.Label(pg4_filter_frame, text='Header',
                         font=('Arial', 8, 'bold'))
 header_label.grid(column=1, row=1, padx=10)
 
 # Label for value to be calculated
-calculate_value_label = tk.Label(filter_frame, text='Calculate value',
+calculate_value_label = tk.Label(pg4_filter_frame, text='Calculate value',
                                  font=('Arial', 8, 'bold'))
 calculate_value_label.grid(column=2, row=1, padx=10)
 
 # Label for testcases
-testcases_label = tk.Label(filter_frame, text='Testcases',
+testcases_label = tk.Label(pg4_filter_frame, text='Testcases',
                            font=('Arial', 8, 'bold'))
 testcases_label.grid(column=3, row=1, padx=10)
 
 # Label for variables
-variables_label = tk.Label(filter_frame, text='Variables',
+variables_label = tk.Label(pg4_filter_frame, text='Variables',
                            font=('Arial', 8, 'bold'))
 variables_label.grid(column=4, row=1, padx=10)
 
