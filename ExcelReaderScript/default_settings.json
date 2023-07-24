@@ -2,7 +2,7 @@
     "Setting_1": {
         "json_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/filter.json",
         "results_folder": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript",
-        "template_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/EvaluationExcel.xlsx",
+        "template_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/EvaluationExcel2.xlsx",
         "location_report": "C:/Users/Michael/Desktop/mwtestcodes/Report_Folder",
         "report_name": "Report_1",
         "testbenches": [
@@ -11,11 +11,13 @@
         ]
     },
     "Setting_2": {
-        "json_file": "",
-        "results_folder": "",
-        "template_file": "",
-        "location_report": "",
+        "json_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/filter.json",
+        "results_folder": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript",
+        "template_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/EvaluationExcel.xlsx",
+        "location_report": "C:/Users/Michael/Desktop/mwtestcodes/Testordner",
         "report_name": "",
-        "testbenches": []
+        "testbenches": [
+            "SYS-118.tbc"
+        ]
     }
 }

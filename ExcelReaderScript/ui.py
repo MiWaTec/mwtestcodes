@@ -143,7 +143,7 @@ def btn_tb_del_clicked():
         print('No valid input given.')
 
 
-def browse_file(input_field, default_setting):
+def browse_file(input_field, default_setting, file_type):
     """This finction will be executed if the 'Browse' of the
        'Load filter file' entry was pressed. It will open a window
        from which the file can be chosen.
@@ -152,10 +152,10 @@ def browse_file(input_field, default_setting):
     input_field.delete(0, tk.END)
     input_field.insert(tk.END, file_path)
     save_default_settings('default_settings.json',
-                          default_setting, file_path)
+                          default_setting, file_type, file_path)
 
 
-def browse_folder(input_field, default_setting):
+def browse_folder(input_field, default_setting, folder_type):
     """This finction will be executed if the 'Browse' of the
        'Save report excel in' entry was pressed. It will open a window
        from which the folder can be chosen.
@@ -164,7 +164,8 @@ def browse_folder(input_field, default_setting):
     input_field.delete(0, tk.END)
     input_field.insert(tk.END, destination_folder)
     save_default_settings('default_settings.json',
-                          default_setting, destination_folder)
+                          default_setting, folder_type,
+                          destination_folder)
 
 
 def start_button_clicked():
@@ -177,7 +178,8 @@ def start_button_clicked():
     nightly_excels = nightlyres_input.get()
     res = calculate_results(filter_data, nightly_excels)
     template_file = template_excel.get()
-    df = write_results_in_template(template_file, res)
+    df = write_results_in_template(template_file, res,
+                                   filter_data['data_filter'])
     report_excel_folder = loc_report_excel.get()
     report_excel_name = report_file_name.get()
     dataframe_to_excel(df, report_excel_folder, report_excel_name)
@@ -428,8 +430,10 @@ json_file_label.grid(column=2, row=1, sticky='w')
 json_file_input = tk.Entry(config_frame, width=60)
 json_file_input.grid(column=2, row=2, columnspan=2, sticky='w', padx=5, pady=5)
 btn_browse_filter = tk.Button(config_frame, text='Browse', width=7,
-                              command=lambda: browse_file(json_file_input,
-                                                          'json_file'))
+                              command=lambda:
+                              browse_file(json_file_input,
+                                          setting_label.cget('text'),
+                                          'json_file'))
 btn_browse_filter.grid(column=4, row=2, sticky='w')
 
 # Label for folder with excel files
@@ -441,8 +445,10 @@ excel_folder_label.grid(column=2, row=3, sticky='w')
 nightlyres_input = tk.Entry(config_frame, width=60)
 nightlyres_input.grid(column=2, row=4, columnspan=2, sticky='w')
 btn_browse_results = tk.Button(config_frame, text='Browse', width=7,
-                               command=lambda: browse_folder(nightlyres_input,
-                                                             'results_folder'))
+                               command=lambda:
+                               browse_folder(nightlyres_input,
+                                             setting_label.cget('text'),
+                                             'results_folder'))
 btn_browse_results.grid(column=4, row=4, sticky='w')
 
 # Label for template to be used
@@ -454,8 +460,10 @@ report_excel_label.grid(column=2, row=5, sticky='w')
 template_excel = tk.Entry(config_frame, width=60)
 template_excel.grid(column=2, row=6, columnspan=2, sticky='n', pady=2)
 btn_browse_template = tk.Button(config_frame, text='Browse', width=7,
-                                command=lambda: browse_file(template_excel,
-                                                            'template_file'))
+                                command=lambda:
+                                browse_file(template_excel,
+                                            setting_label.cget('text'),
+                                            'template_file'))
 btn_browse_template.grid(column=4, row=6, sticky='n')
 
 # Label for target location for the report
@@ -467,8 +475,10 @@ report_excel_label.grid(column=2, row=7, sticky='w')
 loc_report_excel = tk.Entry(config_frame, width=60)
 loc_report_excel.grid(column=2, row=8, columnspan=2, sticky='n', pady=2)
 btn_browse_folder = tk.Button(config_frame, text='Browse', width=7,
-                              command=lambda: browse_folder(loc_report_excel,
-                                                            'location_report'))
+                              command=lambda:
+                              browse_folder(loc_report_excel,
+                                            setting_label.cget('text'),
+                                            'location_report'))
 btn_browse_folder.grid(column=4, row=8, sticky='n')
 
 # Label for name of the report file

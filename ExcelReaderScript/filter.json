@@ -5,8 +5,8 @@
             "FAILED"
         ],
         "tbc": [
-            "SYS-110.tbc",
-            "SYS-112.tbc"
+            "SYS-112.tbc",
+            "SYS-110.tbc"
         ]
     },
     "data_filter": {
@@ -21,6 +21,13 @@
             {
                 "Testcase_1": "R_Variable3",
                 "Testcase_2": "R_Variable2"
+            },
+            {
+                "average": "Schnitt",
+                "min": "min",
+                "max": "max",
+                "experienceable ratio": "Funktion erlebbar [n]",
+                "total": "Total [n]"
             }
         ],
         "Second result info": [
@@ -32,6 +39,12 @@
             ],
             {
                 "Testcase_5": "R_Variable4"
+            },
+            {
+                "average": "Schnitt",
+                "min": "min",
+                "max": "max",
+                "experienceable ratio": "Funktion erlebbar [n]"
             }
         ],
         "Third result info": [
@@ -40,6 +53,9 @@
             ],
             {
                 "Testcase_8": "R_Variable3"
+            },
+            {
+                "experienceable ratio": "Funktion erlebbar [n]"
             }
         ],
         "Navigation": [
@@ -48,6 +64,9 @@
             ],
             {
                 "Testcase_8": "R_Variable5"
+            },
+            {
+                "total": "Total [n]"
             }
         ]
     }

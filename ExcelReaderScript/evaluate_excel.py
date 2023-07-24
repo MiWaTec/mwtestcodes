@@ -303,7 +303,8 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
     return result_dict
 
 
-def write_results_in_template(template_file: str, result_dict: dict) -> object:
+def write_results_in_template(template_file: str, result_dict: dict,
+                              filter_data: dict) -> object:
     """This function converts the template file to a dataframe and writes in
        the data of the result dict. The resulting dataframe will be returned.
 
@@ -312,16 +313,20 @@ def write_results_in_template(template_file: str, result_dict: dict) -> object:
         result_dict (dict): Dictionary that contains the data that will be
                             written into dataframe which was generated from
                             the template file.
+        filter_data: Dictionary that contains all the filter data of the
+                     calculated values and the mapping of the values to the
+                     corresponding headers in the template.
 
     Returns:
         object: Dataframe that contains the data of the result dict.
     """
-    df = pd.read_excel(template_file)
+    df = pd.read_excel(template_file, header=1)
     for row in df.iterrows():
         row_idx, d = row
         if d['Unnamed: 0'] in result_dict:
             for calc_val in result_dict[d['Unnamed: 0']]:
-                df._set_value(row_idx, calc_val,
+                header = filter_data[d['Unnamed: 0']][2][calc_val]
+                df._set_value(row_idx, header,
                               result_dict[d['Unnamed: 0']][calc_val])
     return df
 
