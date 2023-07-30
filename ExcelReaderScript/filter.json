@@ -12,61 +12,61 @@
     "data_filter": {
         "First result info": [
             [
-                "average",
-                "min",
-                "max",
-                "experienceable ratio",
-                "total"
+                "Average value",
+                "Minimum value",
+                "Maximum value",
+                "Experienceable ratio",
+                "Total number of values"
             ],
             {
                 "Testcase_1": "R_Variable3",
                 "Testcase_2": "R_Variable2"
             },
             {
-                "average": "Schnitt",
-                "min": "min",
-                "max": "max",
-                "experienceable ratio": "Funktion erlebbar [n]",
-                "total": "Total [n]"
+                "Average value": "Schnitt",
+                "Minimum value": "min",
+                "Maximum value": "max",
+                "Experienceable ratio": "Funktion erlebbar [n]",
+                "Total number of values": "Total [n]"
             }
         ],
         "Second result info": [
             [
-                "average",
-                "min",
-                "max",
-                "experienceable ratio"
+                "Average value",
+                "Minimum value",
+                "Maximum value",
+                "Experienceable ratio"
             ],
             {
                 "Testcase_5": "R_Variable4"
             },
             {
-                "average": "Schnitt",
-                "min": "min",
-                "max": "max",
-                "experienceable ratio": "Funktion erlebbar [n]"
+                "Average value": "Schnitt",
+                "Minimum value": "min",
+                "Maximum value": "max",
+                "Experienceable ratio": "Funktion erlebbar [n]"
             }
         ],
         "Third result info": [
             [
-                "experienceable ratio"
+                "Experienceable ratio"
             ],
             {
                 "Testcase_8": "R_Variable3"
             },
             {
-                "experienceable ratio": "Funktion erlebbar [n]"
+                "Experienceable ratio": "Funktion erlebbar [n]"
             }
         ],
         "Navigation": [
             [
-                "total"
+                "Total number of values"
             ],
             {
                 "Testcase_8": "R_Variable5"
             },
             {
-                "total": "Total [n]"
+                "Total number of values": "Total [n]"
             }
         ]
     }

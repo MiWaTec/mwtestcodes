@@ -4,6 +4,7 @@ import json
 from evaluate_excel import calculate_results, save_filter, read_filter_json,\
                            save_default_settings, write_results_in_template,\
                            dataframe_to_excel
+import UiConfigurateFilter
 
 
 class ButtonCreator:
@@ -144,7 +145,7 @@ def btn_tb_del_clicked():
 
 
 def browse_file(input_field, default_setting, file_type):
-    """This finction will be executed if the 'Browse' of the
+    """This function will be executed if the 'Browse' of the
        'Load filter file' entry was pressed. It will open a window
        from which the file can be chosen.
     """
@@ -304,7 +305,7 @@ def menubar_go_to_mainmenu():
 
 
 def menubar_go_to_setup():
-    page4.tkraise()
+    UiConfigurateFilter.initialize_page_configurate_filter(window)
 
 
 # Create UI window
@@ -541,6 +542,7 @@ testcases_label.grid(column=3, row=1, padx=10)
 variables_label = tk.Label(pg4_filter_frame, text='Variables',
                            font=('Arial', 8, 'bold'))
 variables_label.grid(column=4, row=1, padx=10)
+
 
 # Display page 1
 page1.tkraise()

@@ -264,13 +264,12 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
               for each info.
     """
     # Mapping of the info names and their functions
-    func_mapping = {'average_min_max': getAverageMinMax,
-                    'average': getAverageValue,
-                    'min': getMinValue,
-                    'max': getMaxValue,
-                    'value_occurence': countListElements,
-                    'experienceable ratio': getSuccessRatio,
-                    'total': getTotalAmount}
+    func_mapping = {'Average value': getAverageValue,
+                    'Minimum value': getMinValue,
+                    'Maximum value': getMaxValue,
+                    'Value occurence': countListElements,
+                    'Experienceable ratio': getSuccessRatio,
+                    'Total number of values': getTotalAmount}
     # Search for excel files and save them in a list
     all_files = getExcelFiles(folder_excel)
     # Filter all excel files and combine the data to a single data frame
@@ -344,3 +343,7 @@ def dataframe_to_excel(df: object, report_excel_folder, report_excel_name):
     df.to_excel(writer, index=False)
     writer.save()
     print("Calculation finished!")
+
+
+def create_table_from_dataframe():
+    pass
