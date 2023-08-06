@@ -66,6 +66,13 @@ class InputLineCreator:
         elif col == 'col2':
             return self.text_var_col2.get()
 
+    def insert_text_entry_obj(self: object, col: str, text: str):
+        if col == 'col1':
+            self.input_line_col1.insert(0, text)
+        if col == 'col2':
+            self.input_line_col2.insert(0, text)
+
+
 
 def initialize_page_add(window, filter_file):
     # Create a frame for the page
