@@ -52,7 +52,7 @@ def initialize_page_configurate_filter(window):
                                font=('Arial', 8, 'bold'))
     json_file_label.grid(row=0, column=1, sticky='w')
     # Input line for json file path
-    json_file_input = tk.Entry(filter_input_frame, width=120)
+    json_file_input = tk.Entry(filter_input_frame, width=130)
     json_file_input.grid(row=1, column=1, sticky='e', padx=5, pady=5)
     btn_browse_filter = tk.Button(filter_input_frame, text='Browse', width=7,
                                   command=lambda:

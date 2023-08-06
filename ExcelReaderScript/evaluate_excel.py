@@ -185,7 +185,6 @@ def read_filter_json(json_file_name: str) -> dict:
     Returns:
         dict: Dictionary provided by the json file that contains the filters.
     """
-    print(json_file_name)
     with open(json_file_name) as f:
         data = json.load(f)
     return data
@@ -213,13 +212,10 @@ def save_filter(filter_file: str, filter_type: str, key: str, value: str,
     data = read_filter_json(filter_file)
     # Modify data of the json file
     value_list = data[filter_type][key]
-    print(value_list)
     if value in value_list and state == 0:
         value_list.remove(value)
-        print(value_list)
     elif value not in value_list and state == 1:
         value_list.append(value)
-    print(value_list)
     data[filter_type][key] = value_list
     print(data)
     # Overwrite json file with new data

@@ -68,6 +68,17 @@
             {
                 "Total number of values": "Total [n]"
             }
+        ],
+        "DummyEntry": [
+            [
+                "DummyValue"
+            ],
+            {
+                "DummyTestcase": "DummyVariable"
+            },
+            {
+                "DummyValue": "DummyHeader"
+            }
         ]
     }
 }

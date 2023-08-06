@@ -1,4 +1,5 @@
 import tkinter as tk
+import json
 import pandas as pd
 from tkinter import ttk
 from tkinter import filedialog
@@ -10,22 +11,26 @@ class InputLineCreator:
         'testcases': {
             'col1': [],
             'col2': [],
-            'row': 2
+            'row': 1
         },
         'calc_value': {
             'col1': [],
             'col2': [],
-            'row': 2
+            'row': 1
         }
     }
 
     def __init__(self, frame, input_type) -> None:
-        self.input_line_col1 = tk.Entry(frame, width=60)
+        self.text_var_col1 = tk.StringVar()
+        self.text_var_col2 = tk.StringVar()
+        self.input_line_col1 = tk.Entry(frame, textvariable=self.text_var_col1,
+                                        width=60)
         self.input_line_col1.grid(column=0,
                                   row=InputLineCreator.instances_dict[input_type]['row'],
                                   sticky='we', padx=10, pady=(0, 5))
         InputLineCreator.instances_dict[input_type]['col1'].append(self)
-        self.input_line_col2 = tk.Entry(frame, width=60)
+        self.input_line_col2 = tk.Entry(frame, textvariable=self.text_var_col2,
+                                        width=60)
         self.input_line_col2.grid(column=1,
                                   row=InputLineCreator.instances_dict[input_type]['row'],
                                   sticky='we', padx=10, pady=(0, 5))
@@ -41,7 +46,7 @@ class InputLineCreator:
             list: A list of all instances of the class that were instantiated.
         """
         col1 = InputLineCreator.instances_dict[input_type]['col1']
-        col2 = InputLineCreator.instances_dict[input_type]['col1']
+        col2 = InputLineCreator.instances_dict[input_type]['col2']
         return list(zip(col1, col2))
 
     def delete_entry_line(self: object, col: str):
@@ -57,6 +62,12 @@ class InputLineCreator:
 
     def delete_obj_instances_dict(input_type, col, obj):
         InputLineCreator.instances_dict[input_type][col].remove(obj)
+
+    def get_text(self, col):
+        if col == 'col1':
+            return self.text_var_col1.get()
+        elif col == 'col2':
+            return self.text_var_col2.get()
 
 
 def initialize_page_add(window, filter_file):
@@ -95,7 +106,7 @@ def initialize_page_add(window, filter_file):
                           font=('Arial', 8, 'bold'))
     name_label.grid(row=0, column=0, sticky='w', padx=10, pady=5)
     # Input line for entry name
-    entry_name_input = tk.Entry(entry_name_frame, width=130)
+    entry_name_input = tk.Entry(entry_name_frame, width=124)
     entry_name_input.grid(row=1, column=0, columnspan=2, sticky='w', padx=10,
                           pady=(0, 5))
 
@@ -106,17 +117,13 @@ def initialize_page_add(window, filter_file):
     testcase_label = tk.Label(new_testcase_frame, text='Testcase',
                               font=('Arial', 8, 'bold'))
     testcase_label.grid(row=0, column=0, sticky='w', padx=10, pady=5)
-    # Input line for testcase
-    testcase_input = tk.Entry(new_testcase_frame, width=60)
-    testcase_input.grid(row=1, column=0, sticky='we', padx=10, pady=(0, 5))
     # Label for variable
     variable_label = tk.Label(new_testcase_frame,
                               text='Variable of the testcase',
                               font=('Arial', 8, 'bold'))
     variable_label.grid(row=0, column=1, sticky='w', padx=10, pady=5)
-    # Input line for variable
-    variable_input = tk.Entry(new_testcase_frame, width=60)
-    variable_input.grid(row=1, column=1, sticky='we', padx=10, pady=(0, 5))
+    # Input lines for testcase and variable
+    InputLineCreator(new_testcase_frame, 'testcases')
 
     # Frame for value to calculate entry and header in template entry
     new_calcvalue_frame = tk.Frame(new_entry_frame, relief='ridge')
@@ -125,17 +132,13 @@ def initialize_page_add(window, filter_file):
     variable_label = tk.Label(new_calcvalue_frame, text='Value to calculate',
                               font=('Arial', 8, 'bold'))
     variable_label.grid(row=0, column=0, sticky='w', padx=10, pady=5)
-    # Input line for values to be calculated
-    variable_input = tk.Entry(new_calcvalue_frame, width=60)
-    variable_input.grid(row=1, column=0, sticky='we', padx=10, pady=(0, 5))
     # Label for header in template
-    variable_label = tk.Label(new_calcvalue_frame,
-                              text='Header in the template',
-                              font=('Arial', 8, 'bold'))
-    variable_label.grid(row=0, column=1, sticky='w', padx=10, pady=5)
-    # Input line for header in template
-    variable_input = tk.Entry(new_calcvalue_frame, width=60)
-    variable_input.grid(row=1, column=1, sticky='we', padx=10, pady=(0, 5))
+    header_label = tk.Label(new_calcvalue_frame,
+                            text='Header in the template',
+                            font=('Arial', 8, 'bold'))
+    header_label.grid(row=0, column=1, sticky='w', padx=10, pady=5)
+    # Input line for values to be calculated and header in template
+    InputLineCreator(new_calcvalue_frame, 'calc_value')
 
     # Frame for options
     options_frame = tk.LabelFrame(page, text='Options', bd=2,
@@ -165,7 +168,8 @@ def initialize_page_add(window, filter_file):
     btn_del_cal_val.grid(row=0, column=3, sticky='nswe', padx=5, pady=5)
     # Button for saving the new entry
     btn_save = tk.Button(options_frame, text='Save', width=20,
-                         command=lambda: save_entry(window))
+                         command=lambda: save_entry(filter_file,
+                                                    entry_name_input.get()))
     btn_save.grid(row=0, column=4, sticky='nswe', padx=5, pady=5)
 
 
@@ -174,6 +178,9 @@ def add_entry_line(frame, input_type):
 
 
 def del_last_entry_line(input_type):
+    all_instances = InputLineCreator.get_all_instances(input_type)
+    if len(all_instances) < 2:
+        return None
     last_entry_line = InputLineCreator.get_all_instances(input_type)[-1]
     InputLineCreator.delete_entry_line(last_entry_line[0], 'col1')
     InputLineCreator.delete_obj_instances_dict(input_type, 'col1',
@@ -184,5 +191,29 @@ def del_last_entry_line(input_type):
     InputLineCreator.instances_dict[input_type]['row'] -= 1
 
 
-def save_entry(frame):
-    pass
+def save_entry(filter_file, entry_name_input):
+    # Get the texts of all testcase/variable inputs
+    tc_var_dict = {}
+    tc_var = InputLineCreator.get_all_instances('testcases')
+    for instance in tc_var:
+        testcase = InputLineCreator.get_text(instance[0], 'col1')
+        variable = InputLineCreator.get_text(instance[1], 'col2')
+        tc_var_dict[testcase] = variable
+    # Get the texts of all value to calculate/template header inputs
+    valcalc_tempheader_dict = {}
+    valcalc_tempheader = InputLineCreator.get_all_instances('calc_value')
+    for instance in valcalc_tempheader:
+        valcalc = InputLineCreator.get_text(instance[0], 'col1')
+        tempheader = InputLineCreator.get_text(instance[1], 'col2')
+        valcalc_tempheader_dict[valcalc] = tempheader
+    print(tc_var_dict)
+    print(valcalc_tempheader_dict)
+    # Load the filter data from json file
+    filter_data = read_filter_json(filter_file)
+    filter_data['data_filter'][entry_name_input] = \
+        [list(valcalc_tempheader_dict),
+         tc_var_dict, valcalc_tempheader_dict]
+    # Save new entry to the filter file
+    print(filter_data)
+    with open(filter_file, 'w') as f:
+        json.dump(filter_data, f, indent=4)
