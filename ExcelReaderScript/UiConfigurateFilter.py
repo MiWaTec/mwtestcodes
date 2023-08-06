@@ -7,6 +7,8 @@ import UiConfigurateFilterAdd
 import UiConfigurateFilterEdit
 import UiConfigurateFilterNewFilter
 
+selected_entry_listbox = None
+
 
 def initialize_page_configurate_filter(window):
     # Create a frame for the page
@@ -36,7 +38,7 @@ def initialize_page_configurate_filter(window):
     # Edit button
     btn_edit_info = tk.Button(btns_frame, text='Edit', width=7,
                               command=lambda:
-                              open_edit_page(window))
+                              open_edit_page(window, json_file_input.get()))
     btn_edit_info.grid(row=1, column=0, sticky='nswe', padx=5, pady=5)
     # Create new filter button
     btn_new_filter = tk.Button(btns_frame, text='New filter', width=7,
@@ -73,8 +75,9 @@ def open_add_page(window, filter_file):
         print('No filter file was selected.')
 
 
-def open_edit_page(window):
-    UiConfigurateFilterEdit.initialize_page_edit(window)
+def open_edit_page(window, filter_file):
+    UiConfigurateFilterEdit.initialize_page_edit(window, filter_file,
+                                                 selected_entry_listbox)
 
 
 def open_new_filter_page(window):
@@ -135,8 +138,9 @@ def display_filter_data(event_object):
 def listbox_item_select(event_object):
     evob = event_object.widget
     index = int(evob.curselection()[0])
-    value = evob.get(index)
-    return value
+    global selected_entry_listbox
+    selected_entry_listbox = evob.get(index)
+    return selected_entry_listbox
 
 
 def load_tc_and_var(df_tc_var):

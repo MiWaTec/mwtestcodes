@@ -1,8 +1,5 @@
 import tkinter as tk
 import json
-import pandas as pd
-from tkinter import ttk
-from tkinter import filedialog
 from evaluate_excel import read_filter_json
 
 
