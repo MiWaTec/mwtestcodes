@@ -8,13 +8,13 @@ from evaluate_excel import read_filter_json
 class InputLineCreator:
     instances_dict = {
         'testcases': {
-            'testcases': [],
-            'tc_variables': [],
+            'col1': [],
+            'col2': [],
             'row': 2
         },
         'calc_value': {
-            'value_to_calc': [],
-            'header_template': [],
+            'col1': [],
+            'col2': [],
             'row': 2
         }
     }
@@ -24,37 +24,39 @@ class InputLineCreator:
         self.input_line_col1.grid(column=0,
                                   row=InputLineCreator.instances_dict[input_type]['row'],
                                   sticky='we', padx=10, pady=(0, 5))
+        InputLineCreator.instances_dict[input_type]['col1'].append(self)
         self.input_line_col2 = tk.Entry(frame, width=60)
         self.input_line_col2.grid(column=1,
                                   row=InputLineCreator.instances_dict[input_type]['row'],
                                   sticky='we', padx=10, pady=(0, 5))
-        if input_type == 'testcases':
-            InputLineCreator.instances_dict[input_type]['testcases'].append(self.input_line_col1)
-            InputLineCreator.instances_dict[input_type]['tc_variables'].append(self.input_line_col2)
-            InputLineCreator.instances_dict[input_type]['row'] += 1
-        elif input_type == 'calc_value':
-            InputLineCreator.instances_dict[input_type]['value_to_calc'].append(self.input_line_col1)
-            InputLineCreator.instances_dict[input_type]['header_template'].append(self.input_line_col2)
-            InputLineCreator.instances_dict[input_type]['row'] += 1
+        InputLineCreator.instances_dict[input_type]['col2'].append(self)
+
+        InputLineCreator.instances_dict[input_type]['row'] += 1
 
     def get_all_instances(input_type) -> list:
-        """This function returns a list of all created instances of the class.
+        """This function returns a list that contains the entry line pairs of
+           given input type of the class as tupels.
 
         Returns:
             list: A list of all instances of the class that were instantiated.
         """
-        if input_type == 'testcases':
-            return InputLineCreator.calc_value_dict['instances']
-        elif input_type == 'calc_value':
-            return InputLineCreator.calc_value_dict['instances']
+        col1 = InputLineCreator.instances_dict[input_type]['col1']
+        col2 = InputLineCreator.instances_dict[input_type]['col1']
+        return list(zip(col1, col2))
 
-    def delete_button(self: object):
+    def delete_entry_line(self: object, col: str):
         """This function deletes the given class object.
 
         Args:
             self (object): Instance of the class that will be deleted.
         """
-        self.input_line.destroy()
+        if col == 'col1':
+            self.input_line_col1.destroy()
+        elif col == 'col2':
+            self.input_line_col2.destroy()
+
+    def delete_obj_instances_dict(input_type, col, obj):
+        InputLineCreator.instances_dict[input_type][col].remove(obj)
 
 
 def initialize_page_add(window, filter_file):
@@ -142,27 +144,24 @@ def initialize_page_add(window, filter_file):
     # Button for adding new testcase/variable pair
     btn_add_tc = tk.Button(options_frame, text='Add testcase', width=20,
                            command=lambda:
-                           add_testcase_variable(new_testcase_frame,
-                                                 'testcases'))
+                           add_entry_line(new_testcase_frame, 'testcases'))
     btn_add_tc.grid(row=0, column=0, sticky='nswe', padx=5, pady=5)
     # Button for deleting the last added testcase variable pair
     btn_del_tc = tk.Button(options_frame, text='Delete testcase', width=20,
                            command=lambda:
-                           del_testcase_variable(new_testcase_frame,
-                                                 'testcases'))
+                           del_last_entry_line('testcases'))
     btn_del_tc.grid(row=0, column=1, sticky='nswe', padx=5, pady=5)
     # Button for adding a new value to calculate and header in template
     btn_add_cal_val = tk.Button(options_frame, text='Add value to calculate',
                                 width=20, command=lambda:
-                                add_value_to_calculate(new_calcvalue_frame,
-                                                       'calc_value'))
+                                add_entry_line(new_calcvalue_frame,
+                                               'calc_value'))
     btn_add_cal_val.grid(row=0, column=2, sticky='nswe', padx=5, pady=5)
     # Button for deleting the last added value to calculate
     btn_del_cal_val = tk.Button(options_frame,
                                 text='Delete value to calculate',
                                 width=20, command=lambda:
-                                del_value_to_calculate(new_calcvalue_frame,
-                                                       'calc_value'))
+                                del_last_entry_line('calc_value'))
     btn_del_cal_val.grid(row=0, column=3, sticky='nswe', padx=5, pady=5)
     # Button for saving the new entry
     btn_save = tk.Button(options_frame, text='Save', width=20,
@@ -170,20 +169,19 @@ def initialize_page_add(window, filter_file):
     btn_save.grid(row=0, column=4, sticky='nswe', padx=5, pady=5)
 
 
-def add_testcase_variable(frame, input_type):
+def add_entry_line(frame, input_type):
     InputLineCreator(frame, input_type)
 
 
-def del_testcase_variable(frame, input_type):
-    pass
-
-
-def add_value_to_calculate(frame, input_type):
-    InputLineCreator(frame, input_type)
-
-
-def del_value_to_calculate(frame, input_type):
-    pass
+def del_last_entry_line(input_type):
+    last_entry_line = InputLineCreator.get_all_instances(input_type)[-1]
+    InputLineCreator.delete_entry_line(last_entry_line[0], 'col1')
+    InputLineCreator.delete_obj_instances_dict(input_type, 'col1',
+                                               last_entry_line[0])
+    InputLineCreator.delete_entry_line(last_entry_line[1], 'col2')
+    InputLineCreator.delete_obj_instances_dict(input_type, 'col2',
+                                               last_entry_line[1])
+    InputLineCreator.instances_dict[input_type]['row'] -= 1
 
 
 def save_entry(frame):
