@@ -69,15 +69,55 @@
                 "Total number of values": "Total [n]"
             }
         ],
-        "DummyEntry": [
+        "Hallo": [
             [
-                "DummyValue"
+                "Average value",
+                "Minimum value",
+                "Maximum value",
+                "Experienceable ratio",
+                "Total number of values",
+                "ValueDummy",
+                "das"
             ],
             {
-                "DummyTestcase": "DummyVariable"
+                "Testcase_1": "R_Variable3",
+                "Testcase_2": "R_Variable2",
+                "TestcaseDummy": "VariableDummy",
+                "Was": "soll"
             },
             {
-                "DummyValue": "DummyHeader"
+                "Average value": "Schnitt",
+                "Minimum value": "min",
+                "Maximum value": "max",
+                "Experienceable ratio": "Funktion erlebbar [n]",
+                "Total number of values": "Total [n]",
+                "ValueDummy": "HeaderDummy",
+                "das": "h\u00e4\u00e4?"
+            }
+        ],
+        "Test": [
+            [
+                "3"
+            ],
+            {
+                "1": "2"
+            },
+            {
+                "3": "4"
+            }
+        ],
+        "Test2": [
+            [
+                "3",
+                "Value"
+            ],
+            {
+                "1": "2",
+                "Test": "Var"
+            },
+            {
+                "3": "4",
+                "Value": "Header"
             }
         ]
     }

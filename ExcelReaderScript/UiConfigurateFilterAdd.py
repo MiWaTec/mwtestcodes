@@ -73,7 +73,6 @@ class InputLineCreator:
             self.input_line_col2.insert(0, text)
 
 
-
 def initialize_page_add(window, filter_file):
     # Create a frame for the page
     page = tk.Frame(window)
@@ -210,14 +209,12 @@ def save_entry(filter_file, entry_name_input):
         valcalc = InputLineCreator.get_text(instance[0], 'col1')
         tempheader = InputLineCreator.get_text(instance[1], 'col2')
         valcalc_tempheader_dict[valcalc] = tempheader
-    print(tc_var_dict)
-    print(valcalc_tempheader_dict)
     # Load the filter data from json file
     filter_data = read_filter_json(filter_file)
+    # Add the new entry to the dict of the filter file
     filter_data['data_filter'][entry_name_input] = \
         [list(valcalc_tempheader_dict),
          tc_var_dict, valcalc_tempheader_dict]
     # Save new entry to the filter file
-    print(filter_data)
     with open(filter_file, 'w') as f:
         json.dump(filter_data, f, indent=4)
