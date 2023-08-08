@@ -1,5 +1,6 @@
 import tkinter as tk
 import json
+import UiConfigurateFilter
 from evaluate_excel import read_filter_json
 
 
@@ -72,8 +73,21 @@ class InputLineCreator:
         if col == 'col2':
             self.input_line_col2.insert(0, text)
 
+    def clean_up_objects():
+        """This function removes all objects from the instances dict and sets
+           the row number to 1.
+        """
+        InputLineCreator.instances_dict['testcases']['col1'] = []
+        InputLineCreator.instances_dict['testcases']['col2'] = []
+        InputLineCreator.instances_dict['testcases']['row'] = 1
+        InputLineCreator.instances_dict['calc_value']['col1'] = []
+        InputLineCreator.instances_dict['calc_value']['col2'] = []
+        InputLineCreator.instances_dict['calc_value']['row'] = 1
+
 
 def initialize_page_add(window, filter_file):
+    # Clean up input line objects of the InputLineCreator class
+    InputLineCreator.clean_up_objects()
     # Create a frame for the page
     page = tk.Frame(window)
     page.grid(row=0, column=0, sticky='nsew')
@@ -172,7 +186,8 @@ def initialize_page_add(window, filter_file):
     # Button for saving the new entry
     btn_save = tk.Button(options_frame, text='Save', width=20,
                          command=lambda: save_entry(filter_file,
-                                                    entry_name_input.get()))
+                                                    entry_name_input.get(),
+                                                    window))
     btn_save.grid(row=0, column=4, sticky='nswe', padx=5, pady=5)
 
 
@@ -194,7 +209,7 @@ def del_last_entry_line(input_type):
     InputLineCreator.instances_dict[input_type]['row'] -= 1
 
 
-def save_entry(filter_file, entry_name_input):
+def save_entry(filter_file, entry_name_input, window):
     # Get the texts of all testcase/variable inputs
     tc_var_dict = {}
     tc_var = InputLineCreator.get_all_instances('testcases')
@@ -218,3 +233,6 @@ def save_entry(filter_file, entry_name_input):
     # Save new entry to the filter file
     with open(filter_file, 'w') as f:
         json.dump(filter_data, f, indent=4)
+    # Switch to back to the configurate filter page
+    UiConfigurateFilter.initialize_page_configurate_filter(window, filter_file)
+    UiConfigurateFilter.set_infos(filter_file)

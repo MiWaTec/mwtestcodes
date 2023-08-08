@@ -1,0 +1,19 @@
+{
+    "result_filter": {
+        "Testcase verdict": [],
+        "tbc": []
+    },
+    "data_filter": {
+        "Erste_info": [
+            [
+                "ErsterVal"
+            ],
+            {
+                "Erster_TC": "ErsteVar"
+            },
+            {
+                "ErsterVal": "ErsterHeader"
+            }
+        ]
+    }
+}

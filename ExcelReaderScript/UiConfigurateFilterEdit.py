@@ -6,6 +6,8 @@ from UiConfigurateFilterAdd import InputLineCreator
 
 
 def initialize_page_edit(window, filter_file, sel_entry):
+    # Clean up input line objects of the InputLineCreator class
+    InputLineCreator.clean_up_objects()
     # Load selected data from filter file
     sel_data = read_filter_json(filter_file)['data_filter'][sel_entry]
     # Create a frame for the page
@@ -119,7 +121,7 @@ def initialize_page_edit(window, filter_file, sel_entry):
     # Button for saving the changes
     btn_save_changes = tk.Button(options_frame, text='Save changes', width=20,
                                  command=lambda:
-                                 save_changes(filter_file, sel_entry))
+                                 save_changes(filter_file, sel_entry, window))
     btn_save_changes.grid(row=1, column=2, sticky='nswe', padx=5, pady=5)
 
 
@@ -132,8 +134,8 @@ def del_complete_entry(filter_file, entry_name_input, window):
     with open(filter_file, 'w') as f:
         json.dump(filter_data, f, indent=4)
     # Switch to configurate filter first page
-    UiConfigurateFilter.initialize_page_configurate_filter(window)
-    UiConfigurateFilter.browse_and_set_infos(filter_file)
+    UiConfigurateFilter.initialize_page_configurate_filter(window, filter_file)
+    UiConfigurateFilter.set_infos(filter_file)
 
 
 def add_entry_line(frame, input_type):
@@ -154,7 +156,7 @@ def del_last_entry_line(input_type):
     InputLineCreator.instances_dict[input_type]['row'] -= 1
 
 
-def save_changes(filter_file, entry_name_input):
+def save_changes(filter_file, entry_name_input, window):
     # Get the texts of all testcase/variable inputs
     tc_var_dict = {}
     tc_var = InputLineCreator.get_all_instances('testcases')
@@ -178,3 +180,6 @@ def save_changes(filter_file, entry_name_input):
     # Save changes to the filter file
     with open(filter_file, 'w') as f:
         json.dump(filter_data, f, indent=4)
+    # Switch to configurate filter first page
+    UiConfigurateFilter.initialize_page_configurate_filter(window, filter_file)
+    UiConfigurateFilter.set_infos(filter_file)

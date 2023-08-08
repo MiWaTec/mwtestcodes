@@ -428,7 +428,7 @@ json_file_label = tk.Label(config_frame, text='Load filter file:',
 json_file_label.grid(column=2, row=1, sticky='w')
 
 # Input line for json file path
-json_file_input = tk.Entry(config_frame, width=60)
+json_file_input = tk.Entry(config_frame, width=120)
 json_file_input.grid(column=2, row=2, columnspan=2, sticky='w', padx=5, pady=5)
 btn_browse_filter = tk.Button(config_frame, text='Browse', width=7,
                               command=lambda:
@@ -443,7 +443,7 @@ excel_folder_label = tk.Label(config_frame, text='Folder with nightly results',
 excel_folder_label.grid(column=2, row=3, sticky='w')
 
 # Input line for folder path with nightly results
-nightlyres_input = tk.Entry(config_frame, width=60)
+nightlyres_input = tk.Entry(config_frame, width=120)
 nightlyres_input.grid(column=2, row=4, columnspan=2, sticky='w')
 btn_browse_results = tk.Button(config_frame, text='Browse', width=7,
                                command=lambda:
@@ -458,7 +458,7 @@ report_excel_label = tk.Label(config_frame, text='Load template file:',
 report_excel_label.grid(column=2, row=5, sticky='w')
 
 # Input line for template to be used
-template_excel = tk.Entry(config_frame, width=60)
+template_excel = tk.Entry(config_frame, width=120)
 template_excel.grid(column=2, row=6, columnspan=2, sticky='n', pady=2)
 btn_browse_template = tk.Button(config_frame, text='Browse', width=7,
                                 command=lambda:
@@ -473,7 +473,7 @@ report_excel_label = tk.Label(config_frame, text='Save report excel in:',
 report_excel_label.grid(column=2, row=7, sticky='w')
 
 # Input line for location of the report excel
-loc_report_excel = tk.Entry(config_frame, width=60)
+loc_report_excel = tk.Entry(config_frame, width=120)
 loc_report_excel.grid(column=2, row=8, columnspan=2, sticky='n', pady=2)
 btn_browse_folder = tk.Button(config_frame, text='Browse', width=7,
                               command=lambda:
@@ -488,7 +488,7 @@ report_file_name_label = tk.Label(config_frame, text='Report file name',
 report_file_name_label.grid(column=2, row=9, sticky='w')
 
 # Input line for the name of the report file
-report_file_name = tk.Entry(config_frame, width=60)
+report_file_name = tk.Entry(config_frame, width=120)
 report_file_name.grid(column=2, row=10, columnspan=2, sticky='n', pady=(0, 5))
 
 # Page 3 / Frame for start button

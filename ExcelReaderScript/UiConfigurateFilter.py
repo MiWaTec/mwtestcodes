@@ -2,15 +2,15 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 import pandas as pd
+import json
 from evaluate_excel import read_filter_json
 import UiConfigurateFilterAdd
 import UiConfigurateFilterEdit
-import UiConfigurateFilterNewFilter
 
 selected_entry_listbox = None
 
 
-def initialize_page_configurate_filter(window):
+def initialize_page_configurate_filter(window, filter_file=''):
     # Create a frame for the page
     page = tk.Frame(window)
     page.grid(row=0, column=0, sticky='nsew')
@@ -43,8 +43,9 @@ def initialize_page_configurate_filter(window):
     # Create new filter button
     btn_new_filter = tk.Button(btns_frame, text='New filter', width=7,
                                command=lambda:
-                               open_new_filter_page(window))
+                               display_input_btn_create(filter_input_frame))
     btn_new_filter.grid(row=2, column=0, sticky='nswe', padx=5, pady=5)
+
     # Frame for input line of the filter json file
     filter_input_frame = tk.Frame(options_frame, bd=1)
     filter_input_frame.grid(row=0, column=1, columnspan=2, sticky='nsew',
@@ -52,14 +53,16 @@ def initialize_page_configurate_filter(window):
     # Label for filter json file path
     json_file_label = tk.Label(filter_input_frame, text='Load filter file:',
                                font=('Arial', 8, 'bold'))
-    json_file_label.grid(row=0, column=1, sticky='w')
+    json_file_label.grid(row=0, column=0, sticky='w')
     # Input line for json file path
     json_file_input = tk.Entry(filter_input_frame, width=130)
-    json_file_input.grid(row=1, column=1, sticky='e', padx=5, pady=5)
+    json_file_input.grid(row=1, column=0, sticky='e', padx=5, pady=5)
+    json_file_input.insert(0, filter_file)
+    # Browse button for json file path
     btn_browse_filter = tk.Button(filter_input_frame, text='Browse', width=7,
                                   command=lambda:
-                                  browse_and_set_infos(json_file_input))
-    btn_browse_filter.grid(row=1, column=2, sticky='e', padx=(0, 5), pady=5)
+                                  set_infos(browse_file(json_file_input)))
+    btn_browse_filter.grid(row=1, column=1, sticky='e', padx=(0, 5), pady=5)
 
     # Frame for the filter data
     global filter_data_frame
@@ -80,13 +83,34 @@ def open_edit_page(window, filter_file):
                                                  selected_entry_listbox)
 
 
-def open_new_filter_page(window):
-    UiConfigurateFilterNewFilter.initialize_page_new_filter(window)
+def display_input_btn_create(frame):
+    # Label for name of the new filter file
+    new_filter_file_label = tk.Label(frame,
+                                     text='Name of the new filter file:',
+                                     font=('Arial', 8, 'bold'))
+    new_filter_file_label.grid(row=2, column=0, sticky='w')
+    # Input line for name of the new filter
+    file_name_input = tk.Entry(frame, width=130)
+    file_name_input.grid(row=3, column=0, sticky='e', padx=5, pady=5)
+    # Create button for the new filter file
+    btn_create_filter = tk.Button(frame, text='Create', width=7,
+                                  command=lambda:
+                                  create_filter_file(file_name_input.get()))
+    btn_create_filter.grid(row=3, column=1, sticky='e', padx=(0, 5), pady=5)
 
 
-def browse_and_set_infos(input_field):
+def create_filter_file(file_name):
+    # Set default filter dict
+    new_filter = {'result_filter': {'Testcase verdict': [],
+                                    'tbc': []},
+                  'data_filter': {}}
+    # Save changes to the filter file
+    with open(file_name, 'w') as f:
+        json.dump(new_filter, f, indent=4)
+
+
+def set_infos(json_file):
     # Load data_filter from json file
-    json_file = browse_file(input_field)
     global data_filter
     data_filter = read_filter_json(json_file)['data_filter']
     # Frame for list box
