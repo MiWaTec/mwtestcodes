@@ -179,11 +179,12 @@ def start_button_clicked():
     nightly_excels = nightlyres_input.get()
     res = calculate_results(filter_data, nightly_excels)
     template_file = template_excel.get()
-    df = write_results_in_template(template_file, res,
-                                   filter_data['data_filter'])
+    df_list = write_results_in_template(template_file, res,
+                                        filter_data['data_filter'],
+                                        row_headers=1)
     report_excel_folder = loc_report_excel.get()
     report_excel_name = report_file_name.get()
-    dataframe_to_excel(df, report_excel_folder, report_excel_name)
+    dataframe_to_excel(df_list, report_excel_folder, report_excel_name)
 
 
 def load_settings(setting):

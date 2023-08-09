@@ -299,9 +299,11 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
 
 
 def write_results_in_template(template_file: str, result_dict: dict,
-                              filter_data: dict) -> object:
+                              filter_data: dict, row_headers: int) -> list:
     """This function converts the template file to a dataframe and writes in
-       the data of the result dict. The resulting dataframe will be returned.
+       the data of the result dict. A list of two dataframes will be returned.
+       The first dataframe contains the values in the rows before the header.
+       The second dataframe contains the headers and its values.
 
     Args:
         template_file (str): Path to the template excel file.
@@ -311,32 +313,47 @@ def write_results_in_template(template_file: str, result_dict: dict,
         filter_data: Dictionary that contains all the filter data of the
                      calculated values and the mapping of the values to the
                      corresponding headers in the template.
+        row_headers: Row number of the headers.
 
     Returns:
-        object: Dataframe that contains the data of the result dict.
+        list: List of dataframes that contains the data of the result dict.
     """
-    df = pd.read_excel(template_file, header=1)
-    for row in df.iterrows():
+    df_list = []
+    # Read excel data before headers
+    if row_headers > 0:
+        df_before_header = pd.read_excel(template_file, header=0,
+                                         nrows=row_headers)
+        df_list.append(df_before_header)
+        print(df_before_header)
+    # Read excel starting from headers and write values under the headers
+    df_data = pd.read_excel(template_file, header=row_headers)
+    for row in df_data.iterrows():
         row_idx, d = row
         if d['Unnamed: 0'] in result_dict:
             for calc_val in result_dict[d['Unnamed: 0']]:
                 header = filter_data[d['Unnamed: 0']][2][calc_val]
-                df._set_value(row_idx, header,
-                              result_dict[d['Unnamed: 0']][calc_val])
-    return df
+                df_data._set_value(row_idx, header,
+                                   result_dict[d['Unnamed: 0']][calc_val])
+    df_list.append(df_data)
+    return df_list
 
 
-def dataframe_to_excel(df: object, report_excel_folder, report_excel_name):
+def dataframe_to_excel(df_list: list, report_excel_folder, report_excel_name):
     """This function writes the content of the given dataframe into an
        excel file.
 
     Args:
-        df (object): Dataframe that will be written into an excel file.
+        df_list (list): List of dataframes that will be written into an excel
+                        file.
     """
     file_path = os.path.join(report_excel_folder, report_excel_name + '.xlsx')
     writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
-    df.columns = [col if 'Unnamed' not in col else '' for col in df.columns]
-    df.to_excel(writer, index=False)
+    filled_rows_counter = 0
+    for df in df_list:
+        print(filled_rows_counter)
+        df.columns = [col if 'Unnamed' not in str(col) else '' for col in df.columns]
+        df.to_excel(writer, index=False, startrow=filled_rows_counter)
+        filled_rows_counter += len(df)
     writer.save()
     print("Calculation finished!")
 
