@@ -1,0 +1,75 @@
+{
+    "result_filter": {
+        "Testcase verdict": [
+            "PASSED",
+            "FAILED"
+        ],
+        "tbc": [
+            "SYS-112.tbc",
+            "SYS-110.tbc"
+        ]
+    },
+    "data_filter": {
+        "First result info": [
+            [
+                "Average value",
+                "Minimum value",
+                "Maximum value",
+                "Experienceable ratio",
+                "Total number of values"
+            ],
+            {
+                "Testcase_1": "R_Variable3",
+                "Testcase_2": "R_Variable2"
+            },
+            {
+                "Average value": "Schnitt",
+                "Minimum value": "min",
+                "Maximum value": "max",
+                "Experienceable ratio": "Funktion erlebbar [n]",
+                "Total number of values": "Total [n]"
+            }
+        ],
+        "Second result info": [
+            [
+                "Average value",
+                "Minimum value",
+                "Maximum value",
+                "Experienceable ratio",
+                "Total number of values"
+            ],
+            {
+                "Testcase_5": "R_Variable4"
+            },
+            {
+                "Average value": "Schnitt",
+                "Minimum value": "min",
+                "Maximum value": "max",
+                "Experienceable ratio": "Funktion erlebbar [n]",
+                "Total number of values": "Total [n]"
+            }
+        ],
+        "Third result info": [
+            [
+                "Experienceable ratio"
+            ],
+            {
+                "Testcase_8": "R_Variable3"
+            },
+            {
+                "Experienceable ratio": "Funktion erlebbar [n]"
+            }
+        ],
+        "Navigation": [
+            [
+                "Total number of values"
+            ],
+            {
+                "Testcase_8": "R_Variable5"
+            },
+            {
+                "Total number of values": "Total [n]"
+            }
+        ]
+    }
+}
