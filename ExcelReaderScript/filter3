@@ -1,0 +1,10 @@
+{
+    "result_filter": {
+        "Testcase verdict": [
+            "PASSED",
+            "FAILED"
+        ],
+        "tbc": []
+    },
+    "data_filter": {}
+}

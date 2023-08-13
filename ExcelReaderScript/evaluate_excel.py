@@ -356,7 +356,3 @@ def dataframe_to_excel(df_list: list, report_excel_folder, report_excel_name):
         filled_rows_counter += len(df)
     writer.save()
     print("Calculation finished!")
-
-
-def create_table_from_dataframe():
-    pass

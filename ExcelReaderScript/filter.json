@@ -35,7 +35,8 @@
                 "Average value",
                 "Minimum value",
                 "Maximum value",
-                "Experienceable ratio"
+                "Experienceable ratio",
+                "Total number of values"
             ],
             {
                 "Testcase_5": "R_Variable4"
@@ -44,7 +45,8 @@
                 "Average value": "Schnitt",
                 "Minimum value": "min",
                 "Maximum value": "max",
-                "Experienceable ratio": "Funktion erlebbar [n]"
+                "Experienceable ratio": "Funktion erlebbar [n]",
+                "Total number of values": "Total [n]"
             }
         ],
         "Third result info": [

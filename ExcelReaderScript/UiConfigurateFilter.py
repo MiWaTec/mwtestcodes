@@ -101,7 +101,7 @@ def display_input_btn_create(frame):
 
 def create_filter_file(file_name):
     # Set default filter dict
-    new_filter = {'result_filter': {'Testcase verdict': [],
+    new_filter = {'result_filter': {'Testcase verdict': ['PASSED', 'FAILED'],
                                     'tbc': []},
                   'data_filter': {}}
     # Save changes to the filter file
