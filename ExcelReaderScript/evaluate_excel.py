@@ -219,7 +219,7 @@ def save_filter(filter_file: str, filter_type: str, key: str, value: str,
     data[filter_type][key] = value_list
     print(data)
     # Overwrite json file with new data
-    with open('filter.json', 'w') as f:
+    with open(filter_file, 'w') as f:
         json.dump(data, f, indent=4)
 
 

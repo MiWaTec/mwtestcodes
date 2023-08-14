@@ -8,7 +8,9 @@
         "report_name": "Report_1001",
         "testbenches": [
             "SYS-112.tbc",
-            "SYS-110.tbc"
+            "SYS-110.tbc",
+            "\".tbc",
+            "\\.tbc"
         ]
     },
     "Setting_2": {
