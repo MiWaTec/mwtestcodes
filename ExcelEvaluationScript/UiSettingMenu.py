@@ -212,7 +212,6 @@ def load_settings(setting):
     for checkbox in checkbox_list:
         if checkbox.name in testbenches:
             checkbox.checkbutton.select()
-    print(checkbox_list)
 
 
 def unload_settings():
@@ -233,9 +232,10 @@ def unload_settings():
     report_file_name.delete(0, tk.END)
     # Remove testbenches
     checkbox_list = UiElementCreator.CheckboxCreator.get_all_instances()
-    UiElementCreator.CheckboxCreator._counter = 0
     for checkbox in checkbox_list:
         UiElementCreator.CheckboxCreator.delete_checkbox(checkbox)
+    UiElementCreator.CheckboxCreator._counter = 0
+    UiElementCreator.CheckboxCreator._instances = []
 
 
 def btn_tb_add_clicked(json_file_path):
