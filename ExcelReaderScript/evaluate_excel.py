@@ -350,7 +350,6 @@ def dataframe_to_excel(df_list: list, report_excel_folder, report_excel_name):
     writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
     filled_rows_counter = 0
     for df in df_list:
-        print(filled_rows_counter)
         df.columns = [col if 'Unnamed' not in str(col) else '' for col in df.columns]
         df.to_excel(writer, index=False, startrow=filled_rows_counter)
         filled_rows_counter += len(df)

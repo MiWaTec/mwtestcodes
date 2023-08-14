@@ -43,7 +43,8 @@ def initialize_page_configurate_filter(window, filter_file=''):
     # Create new filter button
     btn_new_filter = tk.Button(btns_frame, text='New filter', width=7,
                                command=lambda:
-                               display_input_btn_create(filter_input_frame))
+                               display_input_btn_create(filter_input_frame,
+                                                        window))
     btn_new_filter.grid(row=2, column=0, sticky='nswe', padx=5, pady=5)
 
     # Frame for input line of the filter json file
@@ -83,7 +84,7 @@ def open_edit_page(window, filter_file):
                                                  selected_entry_listbox)
 
 
-def display_input_btn_create(frame):
+def display_input_btn_create(frame, window):
     # Label for name of the new filter file
     new_filter_file_label = tk.Label(frame,
                                      text='Name of the new filter file:',
@@ -95,18 +96,22 @@ def display_input_btn_create(frame):
     # Create button for the new filter file
     btn_create_filter = tk.Button(frame, text='Create', width=7,
                                   command=lambda:
-                                  create_filter_file(file_name_input.get()))
+                                  create_filter_file(file_name_input.get(),
+                                                     window))
     btn_create_filter.grid(row=3, column=1, sticky='e', padx=(0, 5), pady=5)
 
 
-def create_filter_file(file_name):
+def create_filter_file(file_name, window):
     # Set default filter dict
     new_filter = {'result_filter': {'Testcase verdict': ['PASSED', 'FAILED'],
                                     'tbc': []},
                   'data_filter': {}}
     # Save changes to the filter file
+    file_name = file_name + '.json'
     with open(file_name, 'w') as f:
         json.dump(new_filter, f, indent=4)
+    initialize_page_configurate_filter(window, filter_file=file_name)
+    set_infos(file_name)
 
 
 def set_infos(json_file):

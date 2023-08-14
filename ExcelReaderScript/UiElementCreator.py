@@ -21,6 +21,7 @@ class ButtonCreator:
 
     def setting_button_used(self, window):
         UiSettingMenu.initialize_page_setting(window)
+        UiSettingMenu.unload_settings()
         UiSettingMenu.load_settings(self.name)
 
     def get_all_instances() -> list:
@@ -57,14 +58,6 @@ class CheckboxCreator:
                               sticky='nw', columnspan=2, padx=5, pady=5)
         CheckboxCreator._counter += 1
         CheckboxCreator._instances.append(self)
-        for obj in CheckboxCreator._instances:
-            print(obj.name)
-        print('end')
-        print(self.name)
-        print(CheckboxCreator._counter)
-        print(self.checked_state.get())
-        print(CheckboxCreator._instances)
-        print(len(CheckboxCreator._instances))
 
     def checkbutton_used(self, filter_file):
         """This function will be executed after a testbench checkbox of the

@@ -1,0 +1,13 @@
+{
+    "result_filter": {
+        "Testcase verdict": [
+            "PASSED",
+            "FAILED"
+        ],
+        "tbc": [
+            "SYS-110.tbc",
+            "SYS-112.tbc"
+        ]
+    },
+    "data_filter": {}
+}

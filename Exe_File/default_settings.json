@@ -1,1 +1,14 @@
-{}
+{
+    "Tiguan": {
+        "json_file": "C:/Users/Michael/Desktop/mwtestcodes/Exe_File/filter.json",
+        "results_folder": "",
+        "template_file": "",
+        "row_number_headers": "",
+        "location_report": "",
+        "report_name": "",
+        "testbenches": [
+            "SYS-110.tbc",
+            "SYS-112.tbc"
+        ]
+    }
+}
