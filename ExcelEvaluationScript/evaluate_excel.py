@@ -100,6 +100,10 @@ def getSuccessRatio(value_list: list, *args) -> int:
     total = len(value_list)
     success = 0
     for value in value_list:
+        try:
+            value = float(value)
+        except ValueError:
+            pass
         if value in [True, 'True'] or value > 0:
             success += 1
     return round(success / total * 100)
@@ -118,6 +122,10 @@ def getSuccessNumber(value_list: list, *args) -> int:
     """
     success = 0
     for value in value_list:
+        try:
+            value = float(value)
+        except ValueError:
+            pass
         if value in [True, 'True'] or value > 0:
             success += 1
     return success
