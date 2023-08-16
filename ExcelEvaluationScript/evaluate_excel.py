@@ -80,8 +80,9 @@ def extractValuesFromDf(df: object, result_filter: dict,
         result_filter['Testcase name'] = [testcase]
         df2 = df.copy()
         df_filtered = filterExcelResults(df2, result_filter)
-        average = list(df_filtered[tc_var_dict[testcase]])
-        value_list = value_list + average
+        if tc_var_dict[testcase] in df_filtered:
+            average = list(df_filtered[tc_var_dict[testcase]])
+            value_list = value_list + average
     return value_list
 
 
@@ -284,7 +285,7 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
     func_mapping = {'Average value': getAverageValue,
                     'Minimum value': getMinValue,
                     'Maximum value': getMaxValue,
-                    'Occurence of each value': countListElements,
+                    'Occurrence of each value': countListElements,
                     'Experienceable ratio': getSuccessRatio,
                     'Number of success': getSuccessNumber,
                     'Total number of values': getLengthOfList,
@@ -305,6 +306,8 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
                                         filter_data['result_filter'],
                                         filter_data['data_filter'][info][1])
         print(extracted)
+        if len(extracted) < 1:
+            continue
         # Create a dict that will contain the calculated values of the info
         info_dict = {}
         # Create a list of functions that will be used for the calculations
