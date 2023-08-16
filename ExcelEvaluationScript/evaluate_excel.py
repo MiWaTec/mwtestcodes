@@ -104,6 +104,24 @@ def getSuccessRatio(value_list: list, *args) -> int:
     return round(success / total * 100)
 
 
+def getSuccessNumber(value_list: list, *args) -> int:
+    """This function calculates the number of values
+       that indicates successful results. A value is considered
+       a success if it is True or greater than 0.
+
+    Args:
+        value_list (list): List of values.
+
+    Returns:
+        int: Number of successful values.
+    """
+    success = 0
+    for value in value_list:
+        if value in [True, 'True'] or value > 0:
+            success += 1
+    return success
+
+
 def getAverageMinMax(value_list: list, *args) -> tuple:
     """This function calculates the average value of a list of numbers.
        In addition, the minimum and the maximum value of the list will
@@ -166,13 +184,16 @@ def countListElements(value_list: list, *args) -> dict:
     return occurence_dict
 
 
-def getTotalAmount(value_list, key):
-    if all(isinstance(x, str) for x in value_list):
-        occurence_dict = countListElements(value_list)
-        total = occurence_dict[key]
-    else:
-        total = len(value_list)
+def OccurenceValueInList(value_list, key):
+    occurence_dict = countListElements(value_list)
+    total = occurence_dict[key]
+    print('XXXX')
+    print(total)
     return total
+
+
+def getLengthOfList(value_list, *args):
+    return len(value_list)
 
 
 def read_filter_json(json_file_name: str) -> dict:
@@ -263,9 +284,11 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
     func_mapping = {'Average value': getAverageValue,
                     'Minimum value': getMinValue,
                     'Maximum value': getMaxValue,
-                    'Value occurence': countListElements,
+                    'Occurence of each value': countListElements,
                     'Experienceable ratio': getSuccessRatio,
-                    'Total number of values': getTotalAmount}
+                    'Number of success': getSuccessNumber,
+                    'Total number of values': getLengthOfList,
+                    'Occurrence of selected value': OccurenceValueInList}
     # Search for excel files and save them in a list
     all_files = getExcelFiles(folder_excel)
     # Filter all excel files and combine the data to a single data frame

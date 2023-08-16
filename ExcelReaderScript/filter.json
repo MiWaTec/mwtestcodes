@@ -60,15 +60,15 @@
                 "Experienceable ratio": "Funktion erlebbar [n]"
             }
         ],
-        "Navigation": [
+        "Phone": [
             [
-                "Total number of values"
+                "Occurrence of selected value"
             ],
             {
                 "Testcase_8": "R_Variable5"
             },
             {
-                "Total number of values": "Total [n]"
+                "Occurrence of selected value": "Total [n]"
             }
         ]
     }
