@@ -104,7 +104,11 @@ def getSuccessRatio(value_list: list, *args) -> int:
             value = float(value)
         except ValueError:
             pass
-        if value in [True, 'True'] or value > 0:
+        if value in [True, 'True', '[]']:
+            success += 1
+        elif value in [None, 'None', False, 'False']:
+            continue
+        elif value > 0:
             success += 1
     return round(success / total * 100)
 
@@ -126,7 +130,11 @@ def getSuccessNumber(value_list: list, *args) -> int:
             value = float(value)
         except ValueError:
             pass
-        if value in [True, 'True'] or value > 0:
+        if value in [True, 'True', '[]']:
+            success += 1
+        elif value in [None, 'None', False, 'False']:
+            continue
+        elif value > 0:
             success += 1
     return success
 
@@ -195,7 +203,7 @@ def countListElements(value_list: list, *args) -> dict:
 
 def OccurenceValueInList(value_list, key):
     occurence_dict = countListElements(value_list)
-    total = occurence_dict[key]
+    total = occurence_dict.get(key)
     print('XXXX')
     print(total)
     return total
