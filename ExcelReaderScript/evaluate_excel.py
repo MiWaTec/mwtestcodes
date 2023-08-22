@@ -1,7 +1,7 @@
 import pandas as pd
-from statistics import mean
 import os
 import json
+import CalcFunctions
 
 
 def getExcelFiles(folder_path) -> list:
@@ -81,136 +81,9 @@ def extractValuesFromDf(df: object, result_filter: dict,
         df2 = df.copy()
         df_filtered = filterExcelResults(df2, result_filter)
         if tc_var_dict[testcase] in df_filtered:
-            average = list(df_filtered[tc_var_dict[testcase]])
-            value_list = value_list + average
+            filtered_values_list = list(df_filtered[tc_var_dict[testcase]])
+            value_list = value_list + filtered_values_list
     return value_list
-
-
-def getSuccessRatio(value_list: list, *args) -> int:
-    """This function calculates the percentage of values
-       that indicates successful results. A value is considered
-       a success if it is True or greater than 0.
-
-    Args:
-        value_list (list): List of values.
-
-    Returns:
-        int: Percentage of successful values.
-    """
-    total = len(value_list)
-    success = 0
-    for value in value_list:
-        try:
-            value = float(value)
-        except ValueError:
-            pass
-        if value in [True, 'True', '[]']:
-            success += 1
-        elif value in [None, 'None', False, 'False']:
-            continue
-        elif value > 0:
-            success += 1
-    return round(success / total * 100)
-
-
-def getSuccessNumber(value_list: list, *args) -> int:
-    """This function calculates the number of values
-       that indicates successful results. A value is considered
-       a success if it is True or greater than 0.
-
-    Args:
-        value_list (list): List of values.
-
-    Returns:
-        int: Number of successful values.
-    """
-    success = 0
-    for value in value_list:
-        try:
-            value = float(value)
-        except ValueError:
-            pass
-        if value in [True, 'True', '[]']:
-            success += 1
-        elif value in [None, 'None', False, 'False']:
-            continue
-        elif value > 0:
-            success += 1
-    return success
-
-
-def getAverageMinMax(value_list: list, *args) -> tuple:
-    """This function calculates the average value of a list of numbers.
-       In addition, the minimum and the maximum value of the list will
-       be determined. Before the calculation, all values less than 0 are
-       removed from the list.
-
-    Args:
-        value_list (list): List of numeric values.
-
-    Returns:
-        tuple: Tuple that contains the average value, minimum value and
-               maximum value: (average, min, max)
-    """
-    filtered_list = [x for x in value_list if x >= 0]
-    average_value = mean(filtered_list)
-    min_value = min(filtered_list)
-    max_value = max(filtered_list)
-    return {'average': average_value, 'min': min_value, 'max': max_value}
-
-
-def getAverageValue(value_list, *args):
-    filtered_list = [float(x) for x in value_list if float(x) >= 0]
-    return mean(filtered_list)
-
-
-def getMinValue(value_list, *args):
-    filtered_list = [float(x) for x in value_list if float(x) >= 0]
-    return min(filtered_list)
-
-
-def getMaxValue(value_list, *args):
-    filtered_list = [float(x) for x in value_list if float(x) >= 0]
-    return max(filtered_list)
-
-
-def countListElements(value_list: list, *args) -> dict:
-    """This function combines the list of lists (the inner lists are present as
-       strings which will be converted to lists) to a single list and counts
-       the number of occurences of each element in the merged list.
-
-    Args:
-        value_list (list): List of lists in string format.
-
-    Returns:
-        dict: Dictionary that contains all elements of the merged list as keys
-              and its occurences as values.
-    """
-    # Combine the list of lists to a single list
-    merged_lists = []
-    for list_of_values in value_list:
-        if '[' in list_of_values and ']' in list_of_values:
-            converted_list = list_of_values.strip('][').split(', ')
-            merged_lists = merged_lists + converted_list
-    # Count the occurrence of all elements in the list
-    occurence_dict = {}
-    all_elements = set(merged_lists)
-    for element in all_elements:
-        count = merged_lists.count(element)
-        occurence_dict[element] = count
-    return occurence_dict
-
-
-def OccurenceValueInList(value_list, key):
-    occurence_dict = countListElements(value_list)
-    total = occurence_dict.get(key)
-    print('XXXX')
-    print(total)
-    return total
-
-
-def getLengthOfList(value_list, *args):
-    return len(value_list)
 
 
 def read_filter_json(json_file_name: str) -> dict:
@@ -298,14 +171,7 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
               for each info.
     """
     # Mapping of the info names and their functions
-    func_mapping = {'Average value': getAverageValue,
-                    'Minimum value': getMinValue,
-                    'Maximum value': getMaxValue,
-                    'Occurrence of each value': countListElements,
-                    'Experienceable ratio': getSuccessRatio,
-                    'Number of success': getSuccessNumber,
-                    'Total number of values': getLengthOfList,
-                    'Occurrence of selected value': OccurenceValueInList}
+    calc_functions = CalcFunctions.getFunctionDict()
     # Search for excel files and save them in a list
     all_files = getExcelFiles(folder_excel)
     # Filter all excel files and combine the data to a single data frame
@@ -313,7 +179,6 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
     for file in all_files:
         df = pd.read_excel(file)
         df_all_data = merge_dataframes(df_all_data, df)
-        print(df_all_data)
     # Read the data frame and calculate the desired values
     result_dict = {}
     for info in filter_data['data_filter']:
@@ -321,7 +186,6 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
         extracted = extractValuesFromDf(df_all_data,
                                         filter_data['result_filter'],
                                         filter_data['data_filter'][info][1])
-        print(extracted)
         if len(extracted) < 1:
             continue
         # Create a dict that will contain the calculated values of the info
@@ -331,7 +195,7 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
         print(list_of_desired_values)
         # Calculate all values of list_of_desired_values
         for val in list_of_desired_values:
-            calculated_result = func_mapping[val](extracted, info)
+            calculated_result = calc_functions[val](extracted, info)
             print(calculated_result)
             info_dict[val] = calculated_result
         # Add the calculated results of the info to the return dict

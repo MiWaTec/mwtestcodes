@@ -5,7 +5,7 @@
         "template_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/EvaluationExcel2.xlsx",
         "row_number_headers": "1",
         "location_report": "C:/Users/Michael/Desktop/mwtestcodes/Report_Folder",
-        "report_name": "Report_1001",
+        "report_name": "Report_1001xxxyyyzz",
         "testbenches": [
             "SYS-112.tbc",
             "SYS-110.tbc"
