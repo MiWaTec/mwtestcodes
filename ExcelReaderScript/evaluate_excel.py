@@ -80,8 +80,14 @@ def extractValuesFromDf(df: object, result_filter: dict,
         result_filter['Testcase name'] = [testcase]
         df2 = df.copy()
         df_filtered = filterExcelResults(df2, result_filter)
-        if tc_var_dict[testcase] in df_filtered:
-            filtered_values_list = list(df_filtered[tc_var_dict[testcase]])
+        # Extract the variable name from type Variable:Key input
+        if ':' in tc_var_dict[testcase]:
+            variable = tc_var_dict[testcase].split(':')[0]
+        else:
+            variable = tc_var_dict[testcase]
+        # Put values of the variable to the value_list
+        if variable in df_filtered:
+            filtered_values_list = list(df_filtered[variable])
             value_list = value_list + filtered_values_list
     return value_list
 
@@ -186,21 +192,25 @@ def calculate_results(filter_data: dict, folder_excel: str) -> dict:
         extracted = extractValuesFromDf(df_all_data,
                                         filter_data['result_filter'],
                                         filter_data['data_filter'][info][1])
+        # Check extracted data and transform if necessary or continue if empty
         if len(extracted) < 1:
             continue
+        elif isinstance(extracted[0], str):
+            var_key = list(filter_data['data_filter'][info][1].values())
+            if ':' in var_key[0] and '[' in extracted[0][:1]:
+                key = var_key[0].split(':')[1]
+                extracted = CalcFunctions.extractValuesFromListOfStringLists(extracted,
+                                                                             key)
         # Create a dict that will contain the calculated values of the info
         info_dict = {}
         # Create a list of functions that will be used for the calculations
         list_of_desired_values = filter_data['data_filter'][info][0]
-        print(list_of_desired_values)
         # Calculate all values of list_of_desired_values
         for val in list_of_desired_values:
             calculated_result = calc_functions[val](extracted, info)
-            print(calculated_result)
             info_dict[val] = calculated_result
         # Add the calculated results of the info to the return dict
         result_dict[info] = info_dict
-    print(result_dict)
     return result_dict
 
 
@@ -230,7 +240,6 @@ def write_results_in_template(template_file: str, result_dict: dict,
         df_before_header = pd.read_excel(template_file, header=0,
                                          nrows=row_headers)
         df_list.append(df_before_header)
-        print(df_before_header)
     # Read excel starting from headers and write values under the headers
     df_data = pd.read_excel(template_file, header=row_headers)
     for row in df_data.iterrows():
@@ -259,5 +268,5 @@ def dataframe_to_excel(df_list: list, report_excel_folder, report_excel_name):
         df.columns = [col if 'Unnamed' not in str(col) else '' for col in df.columns]
         df.to_excel(writer, index=False, startrow=filled_rows_counter)
         filled_rows_counter += len(df)
-    writer.save()
+    writer.close()
     print("Calculation finished!")

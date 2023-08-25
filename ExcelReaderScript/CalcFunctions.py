@@ -128,7 +128,7 @@ def countListElements(value_list: list, *args) -> dict:
     return occurence_dict
 
 
-def OccurenceValueInList(value_list, key):
+def OccurenceValueInList(value_list, key, *args):
     occurence_dict = countListElements(value_list)
     total = occurence_dict.get(key)
     return total
@@ -138,5 +138,35 @@ def getLengthOfList(value_list, *args):
     return len(value_list)
 
 
-def extractValuesFromListOfLists():
-    pass
+def extractValuesFromListOfStringLists(value_list, key, *args):
+    # Transform string lists to lists and combine them to a single list
+    extracted_value_list = []
+    for string_value in value_list:
+        transformed_list = transformStringListsToList(string_value)
+        # Add None to list if transformed_list is empty
+        if len(transformed_list) < 1:
+            extracted_value_list.append(-1)
+            continue
+        # Extract the values of the given key from the transformed list
+        for list_value in transformed_list:
+            if list_value[0] == key.replace("'", ""):
+                extracted_value_list.append(float(list_value[1]))
+            else:
+                extracted_value_list.append(-1)
+    return extracted_value_list
+
+
+def transformStringListsToList(string_list):
+    value_list = []
+    string_list = string_list[1:-1]
+    start = 0
+    end = 0
+    while end != len(string_list)-1:
+        start = string_list.find('[')
+        end = string_list.find(']')
+        if end == -1:
+            break
+        string = string_list[start+2:end].replace("'", "").split(',')
+        value_list.append(string)
+        string_list = string_list[end+1:]
+    return value_list

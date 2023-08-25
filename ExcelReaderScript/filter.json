@@ -60,7 +60,7 @@
                 "Experienceable ratio": "Funktion erlebbar [n]"
             }
         ],
-        "Phone": [
+        "Navigation": [
             [
                 "Occurrence of selected value"
             ],
@@ -69,6 +69,27 @@
             },
             {
                 "Occurrence of selected value": "Total [n]"
+            }
+        ],
+        "Fourth result info": [
+            [
+                "Average value",
+                "Minimum value",
+                "Maximum value",
+                "Experienceable ratio",
+                "Number of success",
+                "Total number of values"
+            ],
+            {
+                "Testcase_1": "R_Variable19:'Willkommen'"
+            },
+            {
+                "Average value": "Schnitt",
+                "Minimum value": "min",
+                "Maximum value": "max",
+                "Experienceable ratio": "Funktion erlebbar [%]",
+                "Number of success": "Funktion erlebbar [n]",
+                "Total number of values": "Total [n]"
             }
         ]
     }

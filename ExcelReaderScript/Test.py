@@ -1,3 +1,4 @@
+
 import pandas as pd
 
 
@@ -34,27 +35,60 @@ import pandas as pd
 # # Rufe die Funktion auf, um die DataFrames in die Excel-Datei zu schreiben
 # write_dataframes_to_excel(df1, df2, excel_file_name)
 
-def transform_strings_to_list(lst_string):
+# def transform_strings_to_list(lst_string):
+#     value_list = []
+#     lst_string = lst_string[1:-1]
+#     start = 0
+#     end = 0
+#     while end != len(lst_string)-1:
+#         start = lst_string.find('[')
+#         end = lst_string.find(']')
+#         if end == -1:
+#             break
+#         string = lst_string[start+2:end].replace("'", "").split(',')
+#         value_list.append(string)
+#         lst_string = lst_string[end+1:]
+#     print(value_list)
+#     return value_list
+def extractValuesFromListOfStringLists(value_list, key, *args):
+    # Extract lists from the string lists and combine them to a single list
+    extracted_value_list = []
+    for string_value in value_list:
+        transformed_list = transformStringListsToList(string_value)
+        for list_value in transformed_list:
+            if list_value[0] == key:
+                extracted_value_list.append(float(list_value[1]))
+            else:
+                extracted_value_list.append(None)
+    return extracted_value_list
+
+
+def transformStringListsToList(string_list):
     value_list = []
-    lst_string = lst_string[1:-1]
+    string_list = string_list[1:-1]
     start = 0
     end = 0
-    while end != len(lst_string)-1:
-        start = lst_string.find('[')
-        end = lst_string.find(']')
+    while end != len(string_list)-1:
+        start = string_list.find('[')
+        end = string_list.find(']')
         if end == -1:
             break
-        string = lst_string[start+2:end].replace("'", "").split(',')
+        string = string_list[start+2:end].replace("'", "").split(',')
         value_list.append(string)
-        lst_string = lst_string[end+1:]
-        print(lst_string)
+        string_list = string_list[end+1:]
     return value_list
 
 
 lists = []
+key = 'Test'
 list_yo = ["[['Willkommen', 3.786], ['Test', 1.234]]", "[['Willkommen', 5.786]]", "[['Willkommen', 2.786]]"]
-for lst_string in list_yo:
-    value_list = transform_strings_to_list(lst_string)
-    print(value_list)
-    lists += value_list
-print(lists)
+print(isinstance(list_yo[0], str))
+print(list_yo[0][:2])
+val_list = extractValuesFromListOfStringLists(list_yo, key)
+print(val_list)
+
+import os
+
+cwd = os.getcwd()  # Get the current working directory (cwd)
+files = os.listdir(cwd)  # Get all the files in that directory
+print("Files in %r: %s" % (cwd, files))
