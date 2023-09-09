@@ -13,6 +13,39 @@ def getFunctionDict():
     return functions
 
 
+def getFunctionDesciption(func_name):
+    desciptions = {'Average value': 'Calculates the average value.',
+                   'Minimum value': 'Returns the minimum value.',
+                   'Maximum value': 'Returns the maximum value.',
+                   'Occurrence of each value': 'Counts the number of\
+                                                occurrences of each element\
+                                                and returns a dictionary with\
+                                                the elements as keys and the\
+                                                number of occurrences as\
+                                                values. This function should\
+                                                be used only for the\
+                                                calculation of the not reached\
+                                                menues in the main menue\
+                                                testcase.',
+                   'Experienceable ratio': 'Calculates the percentage of\
+                                            values that indicates succesful\
+                                            results. A value is considered a\
+                                            success if it is True or greater\
+                                            than 0.',
+                   'Number of success': 'Calculates the number of values that\
+                                         indicates succesful results. A value\
+                                         is considered a success if it is True\
+                                         or greater than 0.',
+                   'Total number of values': 'Returns the total number of\
+                                              values.',
+                   'Occurrence of selected value': 'Returns the number of\
+                                                    occurences of a selected\
+                                                    value. This function is\
+                                                    made for the output values\
+                                                    of the HandlePopups.pkg'}
+    return desciptions[func_name]
+
+
 def getSuccessRatio(value_list: list, *args) -> int:
     """This function calculates the percentage of values
        that indicates successful results. A value is considered

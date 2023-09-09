@@ -122,7 +122,7 @@ def set_infos(json_file):
     listbox_frame = tk.Frame(filter_data_frame, bd=1, relief='ridge')
     listbox_frame.grid(row=2, column=0, sticky='nsew', padx=10, pady=5)
     # Listbox for informations of the filter
-    info_listbox = tk.Listbox(listbox_frame, height=13)
+    info_listbox = tk.Listbox(listbox_frame, height=13, width=50)
     info_listbox.grid(row=0, column=0, sticky='nsew', padx=10, pady=5)
     info_listbox.bind('<<ListboxSelect>>', display_filter_data)
     # Add scrollbar to the listbox
@@ -177,12 +177,15 @@ def load_tc_and_var(df_tc_var):
     tc_var_frame = tk.Frame(filter_data_frame, bd=1)
     tc_var_frame.grid(row=2, column=1, sticky='nsew', padx=10, pady=5)
     # Create a treeview widget
-    tree = ttk.Treeview(tc_var_frame, show='headings')
+    style = ttk.Style()
+    style.configure('table_style.Treeview.Heading', font=('Arial', 8, 'bold'))
+    tree = ttk.Treeview(tc_var_frame, show='headings',
+                        style='table_style.Treeview')
     tree.grid(row=0, column=1, sticky='nsew')
     # Set up columns
     tree['columns'] = list(df_tc_var.columns)
     for column in df_tc_var.columns:
-        tree.column(column, anchor="center", width=200, stretch=tk.NO)
+        tree.column(column, anchor="center", width=300, stretch=tk.NO)
         tree.heading(column, text=column)
     # Insert data from dataframe into the
     for _, row in df_tc_var.iterrows():
@@ -199,12 +202,15 @@ def load_values_to_calculate(valcalc_dict):
     valcalc_frame = tk.Frame(filter_data_frame, bd=1)
     valcalc_frame.grid(row=2, column=2, sticky='nsew', padx=10, pady=5)
     # Create a treeview widget
-    tree = ttk.Treeview(valcalc_frame, show='headings')
+    style = ttk.Style()
+    style.configure('table_style.Treeview.Heading', font=('Arial', 8, 'bold'))
+    tree = ttk.Treeview(valcalc_frame, show='headings',
+                        style='table_style.Treeview')
     tree.grid(row=0, column=0, sticky='nsew')
     # Set up columns
     tree['columns'] = list(valcalc_dict.columns)
     for column in valcalc_dict.columns:
-        tree.column(column, anchor="center", width=130, stretch=tk.NO)
+        tree.column(column, anchor="center", width=180, stretch=tk.NO)
         tree.heading(column, text=column)
     # Insert data from dataframe into the
     for _, row in valcalc_dict.iterrows():

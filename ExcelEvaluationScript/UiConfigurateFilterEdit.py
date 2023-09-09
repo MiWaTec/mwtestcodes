@@ -2,12 +2,12 @@ import tkinter as tk
 import json
 from evaluate_excel import read_filter_json
 import UiConfigurateFilter
-from UiConfigurateFilterAdd import InputLineCreator
+import UiElementCreator
 
 
 def initialize_page_edit(window, filter_file, sel_entry):
     # Clean up input line objects of the InputLineCreator class
-    InputLineCreator.clean_up_objects()
+    UiElementCreator.InputLineCreator.clean_up_objects()
     # Load selected data from filter file
     sel_data = read_filter_json(filter_file)['data_filter'][sel_entry]
     # Create a frame for the page
@@ -60,10 +60,10 @@ def initialize_page_edit(window, filter_file, sel_entry):
     edit_variable_label.grid(row=0, column=1, sticky='w', padx=10, pady=5)
     # Input lines for edit testcase and variable
     for key, value in sel_data[1].items():
-        InputLineCreator(edit_testcase_frame, 'testcases')
-        last_entry = InputLineCreator.get_all_instances('testcases')[-1]
-        InputLineCreator.insert_text_entry_obj(last_entry[0], 'col1', key)
-        InputLineCreator.insert_text_entry_obj(last_entry[1], 'col2', value)
+        UiElementCreator.InputLineCreator(edit_testcase_frame, 'testcases')
+        last_entry = UiElementCreator.InputLineCreator.get_all_instances('testcases')[-1]
+        UiElementCreator.InputLineCreator.insert_text_entry_obj(last_entry[0], 'col1', key)
+        UiElementCreator.InputLineCreator.insert_text_entry_obj(last_entry[1], 'col2', value)
 
     # Frame for edit value to calculate entry and header in template entry
     edit_calcvalue_frame = tk.Frame(edit_entry_frame, relief='ridge')
@@ -80,10 +80,10 @@ def initialize_page_edit(window, filter_file, sel_entry):
     edit_header_label.grid(row=0, column=1, sticky='w', padx=10, pady=5)
     # Input line for edit values to be calculated and header in template
     for key, value in sel_data[2].items():
-        InputLineCreator(edit_calcvalue_frame, 'calc_value')
-        last_entry = InputLineCreator.get_all_instances('calc_value')[-1]
-        InputLineCreator.insert_text_entry_obj(last_entry[0], 'col1', key)
-        InputLineCreator.insert_text_entry_obj(last_entry[1], 'col2', value)
+        UiElementCreator.InputLineCreator(edit_calcvalue_frame, 'calc_value')
+        last_entry = UiElementCreator.InputLineCreator.get_all_instances('calc_value')[-1]
+        UiElementCreator.InputLineCreator.insert_text_entry_obj(last_entry[0], 'col1', key)
+        UiElementCreator.InputLineCreator.insert_text_entry_obj(last_entry[1], 'col2', value)
 
     # Frame for options
     options_frame = tk.LabelFrame(page, text='Options', bd=2,
@@ -139,37 +139,37 @@ def del_complete_entry(filter_file, entry_name_input, window):
 
 
 def add_entry_line(frame, input_type):
-    InputLineCreator(frame, input_type)
+    UiElementCreator.InputLineCreator(frame, input_type)
 
 
 def del_last_entry_line(input_type):
-    all_instances = InputLineCreator.get_all_instances(input_type)
+    all_instances = UiElementCreator.InputLineCreator.get_all_instances(input_type)
     if len(all_instances) < 2:
         return None
-    last_entry_line = InputLineCreator.get_all_instances(input_type)[-1]
-    InputLineCreator.delete_entry_line(last_entry_line[0], 'col1')
-    InputLineCreator.delete_obj_instances_dict(input_type, 'col1',
-                                               last_entry_line[0])
-    InputLineCreator.delete_entry_line(last_entry_line[1], 'col2')
-    InputLineCreator.delete_obj_instances_dict(input_type, 'col2',
-                                               last_entry_line[1])
-    InputLineCreator.instances_dict[input_type]['row'] -= 1
+    last_entry_line = UiElementCreator.InputLineCreator.get_all_instances(input_type)[-1]
+    UiElementCreator.InputLineCreator.delete_entry_line(last_entry_line[0], 'col1')
+    UiElementCreator.InputLineCreator.delete_obj_instances_dict(input_type, 'col1',
+                                                                last_entry_line[0])
+    UiElementCreator.InputLineCreator.delete_entry_line(last_entry_line[1], 'col2')
+    UiElementCreator.InputLineCreator.delete_obj_instances_dict(input_type, 'col2',
+                                                                last_entry_line[1])
+    UiElementCreator.InputLineCreator.instances_dict[input_type]['row'] -= 1
 
 
 def save_changes(filter_file, entry_name_input, window):
     # Get the texts of all testcase/variable inputs
     tc_var_dict = {}
-    tc_var = InputLineCreator.get_all_instances('testcases')
+    tc_var = UiElementCreator.InputLineCreator.get_all_instances('testcases')
     for instance in tc_var:
-        testcase = InputLineCreator.get_text(instance[0], 'col1')
-        variable = InputLineCreator.get_text(instance[1], 'col2')
+        testcase = UiElementCreator.InputLineCreator.get_text(instance[0], 'col1')
+        variable = UiElementCreator.InputLineCreator.get_text(instance[1], 'col2')
         tc_var_dict[testcase] = variable
     # Get the texts of all value to calculate/template header inputs
     valcalc_tempheader_dict = {}
-    valcalc_tempheader = InputLineCreator.get_all_instances('calc_value')
+    valcalc_tempheader = UiElementCreator.InputLineCreator.get_all_instances('calc_value')
     for instance in valcalc_tempheader:
-        valcalc = InputLineCreator.get_text(instance[0], 'col1')
-        tempheader = InputLineCreator.get_text(instance[1], 'col2')
+        valcalc = UiElementCreator.InputLineCreator.get_text(instance[0], 'col1')
+        tempheader = UiElementCreator.InputLineCreator.get_text(instance[1], 'col2')
         valcalc_tempheader_dict[valcalc] = tempheader
     # Load the filter data from json file
     filter_data = read_filter_json(filter_file)
