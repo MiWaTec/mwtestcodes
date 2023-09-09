@@ -1,11 +1,11 @@
 {
     "Setting_1": {
-        "json_file": "C:/Users/warsi/OneDrive/Desktop/PythonProject/mwtestcodes/ExcelReaderScript/filter.json",
-        "results_folder": "C:/Users/warsi/OneDrive/Desktop/PythonProject/mwtestcodes/ExcelReaderScript",
-        "template_file": "C:/Users/warsi/OneDrive/Desktop/PythonProject/mwtestcodes/ExcelReaderScript/EvaluationExcel2.xlsx",
+        "json_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/filter.json",
+        "results_folder": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript",
+        "template_file": "C:/Users/Michael/Desktop/mwtestcodes/ExcelReaderScript/EvaluationExcel2.xlsx",
         "row_number_headers": "1",
-        "location_report": "C:/Users/warsi/OneDrive/Desktop/PythonProject/mwtestcodes/Report_Folder",
-        "report_name": "Report_26_08_23",
+        "location_report": "C:/Users/Michael/Desktop/mwtestcodes/Report_Folder",
+        "report_name": "Report_01_09_23",
         "testbenches": [
             "SYS-112.tbc",
             "SYS-110.tbc"
