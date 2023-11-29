@@ -121,17 +121,26 @@ def getAverageMinMax(value_list: list, *args) -> tuple:
 
 def getAverageValue(value_list, *args):
     filtered_list = [float(x) for x in value_list if float(x) >= 0]
-    return mean(filtered_list)
+    if len(filtered_list) == 0:
+        return None
+    else:
+        return mean(filtered_list)
 
 
 def getMinValue(value_list, *args):
     filtered_list = [float(x) for x in value_list if float(x) >= 0]
-    return min(filtered_list)
+    if len(filtered_list) == 0:
+        return None
+    else:
+        return min(filtered_list)
 
 
 def getMaxValue(value_list, *args):
     filtered_list = [float(x) for x in value_list if float(x) >= 0]
-    return max(filtered_list)
+    if len(filtered_list) == 0:
+        return None
+    else:
+        return max(filtered_list)
 
 
 def countListElements(value_list: list, *args) -> dict:
